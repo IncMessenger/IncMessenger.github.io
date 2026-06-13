@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Incremental | Neon Messenger + Media</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', 'Fira Code', monospace;
+            transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+
+        /* Чёрная тема (базовая) */
+        body[data-theme="dark"] {
+            --bg-body: #000000;
+            --bg-surface: #050505;
+            --bg-elevated: #0a0a0a;
+            --border-glow: #ffffff;
+            --text-primary: #ffffff;
+            --text-secondary: #dddddd;
+            --accent: #ffffff;
+            --accent-glow: 0 0 20px #ffffff, 0 0 12px #aaaaaa;
+            --message-own-bg: #111111;
+            --message-other-bg: #080808;
+            --btn-bg: #111111;
+            --btn-hover: #333333;
+            --btn-hover-text: #ffffff;
+            --shadow: 0 0 25px rgba(255,255,255,0.3);
+            --link-color: #ffffff;
+            --admin-badge: #ffaa66;
+            --gray-text: #aaaaaa;
+        }
+
+        body[data-theme="white"] {
+            --bg-body: #ffffff;
+            --bg-surface: #f8f8ff;
+            --bg-elevated: #f0f0fa;
+            --border-glow: #ffffff;
+            --text-primary: #444444;
+            --text-secondary: #666666;
+            --accent: #ffffff;
+            --accent-glow: 0 0 18px #ffffff, 0 0 10px #aaaaff;
+            --message-own-bg: #e8e8f0;
+            --message-other-bg: #f5f5ff;
+            --btn-bg: #e8e8f0;
+            --btn-hover: #ffffff;
+            --btn-hover-text: #222;
+            --shadow: 0 0 25px rgba(0,0,0,0.15), 0 0 15px #ffffff;
+            --link-color: #5555cc;
+            --admin-badge: #cc8844;
+            --gray-text: #888888;
+        }
+
+        body[data-theme="green"] {
+            --bg-body: #0a1f0a;
+            --bg-surface: #0d2a0d;
+            --bg-elevated: #143014;
+            --border-glow: #2eff9e;
+            --text-primary: #ccffcc;
+            --text-secondary: #aaffaa;
+            --accent: #2eff9e;
+            --accent-glow: 0 0 18px #2eff9e, 0 0 8px #6effb0;
+            --message-own-bg: #1a3a1a;
+            --message-other-bg: #0f2a0f;
+            --btn-bg: #1a3a1a;
+            --btn-hover: #2eff9e;
+            --btn-hover-text: #0a1f0a;
+            --shadow: 0 0 25px #2eff9e;
+            --link-color: #2eff9e;
+            --admin-badge: #ffcc88;
+            --gray-text: #aaffaa;
+        }
+
+        body {
+            background: var(--bg-body);
+            background-image: radial-gradient(var(--accent) 0.4px, transparent 0.4px);
+            background-size: 28px 28px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .global-logo { width: 100%; display: flex; justify-content: center; margin-bottom: 30px; margin-top: 10px; }
+        .logo-oval {
+            background: transparent;
+            border: 2px solid var(--accent);
+            border-radius: 60px;
+            padding: 8px 32px;
+            box-shadow: var(--accent-glow);
+        }
+        .logo-oval span { font-size: 1.6rem; font-weight: bold; letter-spacing: 4px; color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+
+        .app {
+            display: none;
+            width: 100%;
+            max-width: 1400px;
+            background: var(--bg-surface);
+            border-radius: 32px;
+            border: 2px solid var(--accent);
+            overflow: hidden;
+            box-shadow: var(--shadow), inset 0 0 8px var(--accent);
+            margin-top: 10px;
+        }
+
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 12px 24px;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--accent);
+            gap: 12px;
+        }
+        .admin-btn {
+            background: transparent;
+            border: 1px solid var(--admin-badge);
+            border-radius: 60px;
+            padding: 6px 16px;
+            color: var(--admin-badge);
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 0 6px var(--admin-badge);
+        }
+        .admin-btn:hover { background: var(--admin-badge); color: black; box-shadow: 0 0 15px var(--admin-badge); }
+        .profile-oval {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: transparent;
+            border: 1px solid var(--accent);
+            border-radius: 60px;
+            padding: 4px 18px 4px 8px;
+            cursor: pointer;
+            box-shadow: 0 0 10px var(--accent);
+        }
+        .small-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--bg-elevated); border: 1px solid var(--accent); overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .small-avatar img, .small-avatar span { width: 100%; height: 100%; object-fit: cover; font-size: 24px; }
+        .profile-nick { font-weight: bold; color: var(--text-primary); text-shadow: 0 0 4px var(--accent); }
+        .logout-icon { background: none; border: none; color: var(--text-secondary); cursor: pointer; margin-left: 8px; font-size: 18px; }
+
+        .tabs { display: flex; background: var(--bg-elevated); gap: 2px; flex-wrap: wrap; }
+        .tab {
+            flex: 1; text-align: center; padding: 12px; background: var(--bg-surface);
+            cursor: pointer; border-bottom: 2px solid transparent; font-weight: bold;
+            color: var(--text-secondary);
+        }
+        .tab.active { border-bottom-color: var(--accent); background: var(--bg-elevated); color: var(--text-primary); text-shadow: 0 0 4px var(--accent); }
+        .panel { padding: 20px; display: none; }
+
+        /* ЛЕНТА MEDIA */
+        .media-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .media-post {
+            background: var(--bg-elevated);
+            border: 1px solid var(--accent);
+            border-radius: 40px;
+            padding: 20px;
+            box-shadow: 0 0 15px var(--accent);
+            transition: 0.2s;
+        }
+        .media-post:hover { box-shadow: 0 0 25px var(--accent); }
+        .post-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+            cursor: pointer;
+        }
+        .post-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--bg-surface);
+            border: 1px solid var(--accent);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .post-author {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: var(--text-primary);
+        }
+        .post-time {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            margin-left: auto;
+        }
+        .post-content {
+            margin-bottom: 16px;
+        }
+        .post-text {
+            font-size: 1rem;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+        }
+        .post-image {
+            max-width: 100%;
+            border-radius: 24px;
+            border: 1px solid var(--accent);
+            margin-top: 12px;
+        }
+        .post-actions {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            border-top: 1px solid var(--border-glow);
+            padding-top: 12px;
+            margin-top: 8px;
+        }
+        .action-btn {
+            background: none;
+            border: none;
+            color: var(--gray-text);
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 8px;
+            border-radius: 40px;
+            transition: 0.2s;
+        }
+        .action-btn:hover {
+            background: rgba(255,255,255,0.1);
+            color: var(--accent);
+        }
+        .add-post-btn {
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .neon-oval-btn {
+            background: transparent; border: 1px solid var(--accent); border-radius: 60px;
+            padding: 8px 24px; font-weight: bold; cursor: pointer;
+            box-shadow: 0 0 10px var(--accent); color: var(--text-primary);
+            margin: 5px; display: inline-block;
+        }
+        .neon-oval-btn:hover { background: var(--accent); color: var(--btn-hover-text); box-shadow: 0 0 20px var(--accent); }
+
+        /* Сообщения чата */
+        .messages-area {
+            height: 45vh;
+            background: var(--bg-elevated);
+            border-radius: 24px;
+            padding: 16px;
+            overflow-y: auto;
+            border: 1px solid var(--accent);
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.2), 0 0 15px var(--accent);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .message {
+            background: var(--message-other-bg);
+            border-radius: 40px;
+            padding: 8px 18px;
+            width: fit-content;
+            max-width: 80%;
+            border: 1px solid var(--accent);
+            box-shadow: 0 0 12px var(--accent);
+        }
+        .message.own { align-self: flex-end; background: var(--message-own-bg); }
+        .msg-meta {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .msg-avatar { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-elevated); border: 1px solid var(--accent); overflow: hidden; display: inline-flex; align-items: center; justify-content: center; }
+        .profile-clickable { cursor: pointer; display: inline-flex; align-items: center; gap: 6px; font-weight: bold; color: var(--link-color); text-decoration: underline; background: none; border: none; font-size: inherit; padding: 0; }
+        .input-group { display: flex; gap: 12px; margin-top: 16px; }
+        .input-group input { flex: 1; background: var(--bg-elevated); border: 1px solid var(--accent); padding: 12px 18px; border-radius: 60px; color: var(--text-primary); outline: none; box-shadow: 0 0 5px var(--accent); }
+        button { background: var(--btn-bg); border: 1px solid var(--accent); color: var(--text-primary); padding: 0 24px; border-radius: 60px; font-weight: bold; cursor: pointer; box-shadow: 0 0 5px var(--accent); }
+        button:hover { background: var(--btn-hover); color: var(--btn-hover-text); box-shadow: 0 0 12px var(--accent); }
+
+        .private-layout { display: flex; gap: 24px; flex-wrap: wrap; }
+        .friends-panel, .search-panel { flex: 1; background: var(--bg-elevated); border-radius: 24px; padding: 18px; border: 1px solid var(--accent); box-shadow: 0 0 12px var(--accent); }
+        .friend-card { display: flex; align-items: center; gap: 14px; padding: 10px; margin-bottom: 8px; border-radius: 20px; background: var(--bg-surface); border: 1px solid transparent; cursor: pointer; }
+        .friend-card:hover { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .pm-chat { margin-top: 24px; background: var(--bg-elevated); border-radius: 24px; padding: 16px; border: 1px solid var(--accent); }
+
+        .modal {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: #000000cc; backdrop-filter: blur(8px);
+            display: flex; align-items: center; justify-content: center; z-index: 3000;
+        }
+        .modal-card {
+            background: var(--bg-surface); border: 2px solid var(--accent);
+            border-radius: 32px; padding: 28px; width: 480px; max-width: 95%;
+            text-align: center;
+            box-shadow: 0 0 30px var(--accent);
+        }
+        .avatar-preview { width: 80px; height: 80px; margin: 10px auto; border-radius: 50%; border: 2px solid var(--accent); overflow: hidden; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; font-size: 48px; }
+        .admin-user-list { max-height: 300px; overflow-y: auto; text-align: left; margin: 15px 0; }
+        .admin-user-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid var(--border-glow); flex-wrap: wrap; gap: 8px; }
+
+        .loader-screen {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: var(--bg-body); z-index: 2000;
+            display: flex; align-items: center; justify-content: center;
+            transition: opacity 0.8s;
+        }
+        .loader-container { max-width: 900px; width: 90%; background: var(--bg-surface); border: 2px solid var(--accent); border-radius: 32px; padding: 2rem; }
+        .console-box { background: var(--bg-elevated); border-radius: 20px; padding: 1.5rem; border-left: 4px solid var(--accent); }
+        .console-header { color: var(--text-primary); border-bottom: 1px solid var(--accent); padding-bottom: 8px; margin-bottom: 20px; }
+        .console-lines { min-height: 320px; overflow-y: auto; color: var(--text-secondary); }
+        .line { margin-bottom: 8px; border-left: 2px solid var(--accent); padding-left: 12px; }
+        .cursor-blink { display: inline-block; width: 10px; height: 16px; background: var(--accent); animation: blink 1s infinite; margin-left: 6px; box-shadow: var(--accent-glow); }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+    </style>
+</head>
+<body data-theme="dark">
+
+<div id="loaderScreen" class="loader-screen">
+    <div class="loader-container">
+        <div class="console-box">
+            <div class="console-header">INCREMENTAL::BOOT [MEDIA MODULE]</div>
+            <div id="consoleLines" class="console-lines"></div>
+        </div>
+    </div>
+</div>
+
+<div class="global-logo"><div class="logo-oval"><span>INCREMENTAL</span></div></div>
+
+<div id="app" class="app">
+    <div class="top-bar">
+        <div id="adminPanelBtn" style="display:none;"><button class="admin-btn">🛡️ Admin Panel</button></div>
+        <div class="profile-oval" id="profileOvalBtn">
+            <div class="small-avatar" id="topAvatar">👤</div>
+            <span class="profile-nick" id="topNick">...</span>
+            <span class="logout-icon" id="topLogoutBtn">🚪</span>
+        </div>
+    </div>
+    <div class="tabs">
+        <div class="tab active" data-tab="global">🌍 Global Chat</div>
+        <div class="tab" data-tab="private">💬 Personal Chat</div>
+        <div class="tab" data-tab="media">📱 Media</div>
+    </div>
+    <div id="globalPanel" class="panel">
+        <div class="messages-area" id="globalMessagesArea"></div>
+        <div class="input-group"><input type="text" id="globalMsgInput" placeholder="Сообщение..."><button id="sendGlobalBtn">Отправить</button></div>
+    </div>
+    <div id="privatePanel" class="panel">
+        <div class="private-layout">
+            <div class="friends-panel"><h3>🤝 Друзья</h3><div id="friendsList"></div><div class="pending-area" id="pendingRequestsArea"></div></div>
+            <div class="search-panel"><h3>🔍 Поиск</h3><div class="input-group"><input type="text" id="searchNickInput" placeholder="Никнейм"><button id="searchUserBtn">Найти</button></div><div id="searchResults"></div></div>
+        </div>
+        <div class="pm-chat"><h3 id="pmTitle">💬 Личный диалог</h3><div class="messages-area" id="pmMessagesArea" style="height:30vh"></div><div class="input-group"><input type="text" id="pmInput" placeholder="Сообщение..." disabled><button id="sendPmBtn" disabled>Отправить</button></div></div>
+    </div>
+    <div id="mediaPanel" class="panel">
+        <button class="neon-oval-btn add-post-btn" id="addPostBtn">➕ Создать пост</button>
+        <div id="mediaFeed" class="media-feed"></div>
+    </div>
+</div>
+
+<script>
+    // ---------- ХРАНИЛИЩЕ ----------
+    let users = [];
+    let nextId = 1;
+    let currentUser = null;
+    let globalMessages = [];
+    let privateMessages = {};
+    let friendships = {};
+    let pendingRequests = {};
+    let posts = [];
+
+    // Базовая аватарка "INC"
+    const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222222'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='%23ffffff' font-family='monospace'%3EINC%3C/text%3E%3C/svg%3E";
+
+    function loadAllData() {
+        users = JSON.parse(localStorage.getItem("inc_users") || "[]");
+        nextId = parseInt(localStorage.getItem("inc_nextId") || "1");
+        globalMessages = JSON.parse(localStorage.getItem("inc_global") || "[]");
+        privateMessages = JSON.parse(localStorage.getItem("inc_private") || "{}");
+        friendships = JSON.parse(localStorage.getItem("inc_friends") || "{}");
+        pendingRequests = JSON.parse(localStorage.getItem("inc_requests") || "{}");
+        posts = JSON.parse(localStorage.getItem("inc_posts") || "[]");
+        // Для старых пользователей без аватарки добавляем базовую
+        users.forEach(u => { if(!u.avatarBase64) u.avatarBase64 = DEFAULT_AVATAR; });
+        saveAll();
+    }
+    function saveAll() {
+        localStorage.setItem("inc_users", JSON.stringify(users));
+        localStorage.setItem("inc_nextId", nextId);
+        localStorage.setItem("inc_global", JSON.stringify(globalMessages));
+        localStorage.setItem("inc_private", JSON.stringify(privateMessages));
+        localStorage.setItem("inc_friends", JSON.stringify(friendships));
+        localStorage.setItem("inc_requests", JSON.stringify(pendingRequests));
+        localStorage.setItem("inc_posts", JSON.stringify(posts));
+    }
+    function findUserById(id) { return users.find(u => u.id === id); }
+    function findUserByNick(nick) { return users.find(u => u.nick.toLowerCase() === nick.toLowerCase()); }
+    function isBanned(userId) { const u = findUserById(userId); return u ? u.banned === true : false; }
+
+    // Авторизация (админ = ник "Incremental")
+    function showAuthScreen() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <h2>INCREMENTAL</h2>
+                <div style="display:flex; gap:10px; margin-bottom:15px;">
+                    <button id="loginTabBtn" style="flex:1;">Вход</button>
+                    <button id="registerTabBtn" style="flex:1;">Регистрация</button>
+                </div>
+                <div id="loginForm"><input type="text" id="loginName" placeholder="Логин"><input type="password" id="loginPass" placeholder="Пароль"><button id="doLoginBtn">Войти</button></div>
+                <div id="registerForm" style="display:none;"><input type="text" id="regLogin" placeholder="Логин"><input type="password" id="regPass" placeholder="Пароль"><input type="text" id="regNick" placeholder="Никнейм"><button id="doRegBtn">Создать аккаунт</button></div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const loginTab = document.getElementById('loginTabBtn');
+        const regTab = document.getElementById('registerTabBtn');
+        const loginDiv = document.getElementById('loginForm');
+        const regDiv = document.getElementById('registerForm');
+        loginTab.onclick = () => { loginTab.style.background = '#2a2a35'; regTab.style.background = ''; loginDiv.style.display = 'block'; regDiv.style.display = 'none'; };
+        regTab.onclick = () => { regTab.style.background = '#2a2a35'; loginTab.style.background = ''; loginDiv.style.display = 'none'; regDiv.style.display = 'block'; };
+        document.getElementById('doLoginBtn').onclick = () => {
+            const login = document.getElementById('loginName').value.trim();
+            const pass = document.getElementById('loginPass').value.trim();
+            const user = users.find(u => u.login === login && u.password === pass);
+            if(user) { currentUser = user; localStorage.setItem("inc_currentId", user.id); modal.remove(); startApp(); }
+            else alert("Неверные данные");
+        };
+        document.getElementById('doRegBtn').onclick = () => {
+            const login = document.getElementById('regLogin').value.trim();
+            const pass = document.getElementById('regPass').value.trim();
+            const nick = document.getElementById('regNick').value.trim();
+            if(!login || !pass || !nick) return alert("Заполните все поля");
+            if(users.find(u => u.login === login)) return alert("Логин занят");
+            if(users.find(u => u.nick === nick)) return alert("Никнейм занят");
+            const isAdmin = (nick === "Incremental");
+            const newUser = { id: nextId++, login, password: pass, nick, avatarBase64: DEFAULT_AVATAR, theme: "dark", bannerColor: "#ffffff", bio: "", isAdmin: isAdmin, banned: false };
+            users.push(newUser);
+            friendships[newUser.id] = [];
+            pendingRequests[newUser.id] = [];
+            saveAll();
+            alert("Регистрация успешна! Войдите.");
+            loginTab.click();
+            document.getElementById('loginName').value = login;
+            document.getElementById('loginPass').value = pass;
+        };
+    }
+
+    function startApp() {
+        if(!currentUser) {
+            const savedId = localStorage.getItem("inc_currentId");
+            if(savedId) currentUser = findUserById(parseInt(savedId));
+            if(!currentUser) { showAuthScreen(); return; }
+        }
+        if(!friendships[currentUser.id]) friendships[currentUser.id] = [];
+        if(!pendingRequests[currentUser.id]) pendingRequests[currentUser.id] = [];
+        document.body.setAttribute('data-theme', currentUser.theme || 'dark');
+        renderUI();
+    }
+
+    let currentPrivateChatWith = null;
+
+    function renderUI() {
+        document.getElementById('topNick').innerText = currentUser.nick;
+        const avatarDiv = document.getElementById('topAvatar');
+        if(currentUser.avatarBase64) avatarDiv.innerHTML = `<img src="${currentUser.avatarBase64}">`;
+        else avatarDiv.innerHTML = '<span>👤</span>';
+        const adminBtnContainer = document.getElementById('adminPanelBtn');
+        if(currentUser.isAdmin) { adminBtnContainer.style.display = 'block'; adminBtnContainer.onclick = () => showAdminPanel(); }
+        else adminBtnContainer.style.display = 'none';
+        document.getElementById('profileOvalBtn').onclick = (e) => { if(e.target.id !== 'topLogoutBtn') showProfileSettings(); };
+        document.getElementById('topLogoutBtn').onclick = () => { localStorage.removeItem("inc_currentId"); currentUser = null; location.reload(); };
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.onclick = () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                const type = tab.dataset.tab;
+                document.getElementById('globalPanel').style.display = type === 'global' ? 'block' : 'none';
+                document.getElementById('privatePanel').style.display = type === 'private' ? 'block' : 'none';
+                document.getElementById('mediaPanel').style.display = type === 'media' ? 'block' : 'none';
+                if(type === 'private') refreshPrivateUI();
+                if(type === 'media') renderMediaFeed();
+            };
+        });
+        document.getElementById('sendGlobalBtn').onclick = () => sendGlobalMsg();
+        document.getElementById('globalMsgInput').addEventListener('keypress', e => { if(e.key === 'Enter') sendGlobalMsg(); });
+        document.getElementById('searchUserBtn').onclick = () => searchUsers();
+        document.getElementById('sendPmBtn').onclick = () => sendPrivateMsg();
+        document.getElementById('pmInput').addEventListener('keypress', e => { if(e.key === 'Enter') sendPrivateMsg(); });
+        document.getElementById('addPostBtn').onclick = () => showAddPostModal();
+        renderGlobalMessages();
+        refreshPrivateUI();
+        renderMediaFeed();
+        document.getElementById('app').style.display = 'block';
+    }
+
+    // ---------- ГЛОБАЛЬНЫЙ ЧАТ ----------
+    function sendGlobalMsg() {
+        if(isBanned(currentUser.id)) { alert("Вы забанены"); return; }
+        const input = document.getElementById('globalMsgInput');
+        const text = input.value.trim();
+        if(!text) return;
+        globalMessages.push({ id: Date.now(), fromId: currentUser.id, fromNick: currentUser.nick, text, time: new Date().toLocaleTimeString() });
+        saveAll();
+        input.value = '';
+        renderGlobalMessages();
+    }
+    function renderGlobalMessages() {
+        const container = document.getElementById('globalMessagesArea');
+        if(!container) return;
+        container.innerHTML = '';
+        [...globalMessages].reverse().forEach(msg => {
+            if(findUserById(msg.fromId)?.banned) return;
+            const isOwn = msg.fromId === currentUser.id;
+            const user = findUserById(msg.fromId);
+            const avatarHtml = user ? (user.avatarBase64 ? `<img src="${user.avatarBase64}" style="width:100%;height:100%;object-fit:cover">` : `<span>👤</span>`) : `<span>👤</span>`;
+            const div = document.createElement('div');
+            div.className = `message ${isOwn ? 'own' : ''}`;
+            div.innerHTML = `<div class="msg-meta"><div class="msg-avatar">${avatarHtml}</div><button class="profile-clickable" data-userid="${msg.fromId}">${escapeHtml(msg.fromNick)}</button><span>${msg.time}</span></div><div>${escapeHtml(msg.text)}</div>`;
+            container.prepend(div);
+        });
+        document.querySelectorAll('#globalMessagesArea .profile-clickable').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); showUserProfile(parseInt(btn.dataset.userid)); }));
+    }
+
+    // ---------- ПРОФИЛЬ (МОДАЛЬНОЕ ОКНО С ДРУЗЬЯМИ) ----------
+    function showUserProfile(userId) {
+        const user = findUserById(userId);
+        if(!user) return;
+        const isSelf = userId === currentUser.id;
+        const isFriend = friendships[currentUser.id]?.includes(userId);
+        const requestSent = pendingRequests[userId]?.some(req => req.fromId === currentUser.id);
+        let actionButton = '';
+        if(!isSelf && !isFriend && !requestSent && !user.banned) {
+            actionButton = `<button class="neon-oval-btn" id="addFriendProfileBtn">➕ Добавить в друзья</button>`;
+        } else if(!isSelf && requestSent) {
+            actionButton = `<button class="neon-oval-btn" disabled>⏳ Заявка отправлена</button>`;
+        } else if(!isSelf && isFriend) {
+            actionButton = `<button class="neon-oval-btn" disabled>✓ Уже друг</button>`;
+        }
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <h2>📋 Профиль</h2>
+                <div class="avatar-preview" style="width:100px; height:100px; margin:0 auto 15px auto;">
+                    ${user.avatarBase64 ? `<img src="${user.avatarBase64}" style="width:100%;height:100%;object-fit:cover">` : '<span style="font-size:64px">👤</span>'}
+                </div>
+                <div><strong>${escapeHtml(user.nick)}</strong> ${user.isAdmin ? '<span style="color:var(--admin-badge)">👑 Admin</span>' : ''} ${user.banned ? '<span style="color:#ff8888">⛔ Banned</span>' : ''}</div>
+                <div style="margin:10px 0; padding:8px; background: var(--bg-elevated); border-radius: 20px;">${escapeHtml(user.bio || 'Описание отсутствует')}</div>
+                ${actionButton}
+                <button class="neon-oval-btn" id="closeProfileBtn">Закрыть</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        if(actionButton && !isSelf && !isFriend && !requestSent && !user.banned) {
+            document.getElementById('addFriendProfileBtn')?.addEventListener('click', () => { sendFriendRequest(userId); modal.remove(); });
+        }
+        document.getElementById('closeProfileBtn').onclick = () => modal.remove();
+    }
+
+    // ---------- ДРУЗЬЯ И ЛИЧНЫЕ СООБЩЕНИЯ ----------
+    function refreshPrivateUI() { renderFriendsList(); renderPendingRequests(); if(currentPrivateChatWith) openPrivateChat(currentPrivateChatWith); else { document.getElementById('pmTitle').innerHTML = '💬 Личный диалог'; document.getElementById('pmInput').disabled = true; document.getElementById('sendPmBtn').disabled = true; } }
+    function renderFriendsList() {
+        const container = document.getElementById('friendsList'); if(!container) return;
+        const friendsIds = friendships[currentUser.id] || [];
+        if(friendsIds.length === 0) { container.innerHTML = '<div>Нет друзей.</div>'; return; }
+        container.innerHTML = '';
+        friendsIds.forEach(fid => { const friend = findUserById(fid); if(friend && !friend.banned) { const div = document.createElement('div'); div.className = 'friend-card'; div.innerHTML = `<div class="friend-avatar">${friend.avatarBase64 ? `<img src="${friend.avatarBase64}" style="width:100%">` : '👤'}</div><div class="friend-info"><div class="friend-nick">${escapeHtml(friend.nick)}</div></div>`; div.onclick = () => openPrivateChat(friend.id); container.appendChild(div); } });
+    }
+    function openPrivateChat(friendId) { currentPrivateChatWith = friendId; const friend = findUserById(friendId); document.getElementById('pmTitle').innerHTML = `💬 Чат с ${friend?.nick}`; document.getElementById('pmInput').disabled = false; document.getElementById('sendPmBtn').disabled = false; renderPrivateMessages(friendId); }
+    function renderPrivateMessages(friendId) { const key = [currentUser.id, friendId].sort().join('_'); const msgs = privateMessages[key] || []; const container = document.getElementById('pmMessagesArea'); if(!container) return; container.innerHTML = ''; msgs.forEach(msg => { const div = document.createElement('div'); div.className = `message ${msg.fromId === currentUser.id ? 'own' : ''}`; const sender = msg.fromId === currentUser.id ? 'Вы' : (findUserById(msg.fromId)?.nick || 'Друг'); div.innerHTML = `<div class="msg-meta"><span>${escapeHtml(sender)}</span><span>${msg.time}</span></div><div>${escapeHtml(msg.text)}</div>`; container.appendChild(div); }); container.scrollTop = container.scrollHeight; }
+    function sendPrivateMsg() { if(!currentPrivateChatWith) return; if(isBanned(currentUser.id)) { alert("Вы забанены"); return; } const input = document.getElementById('pmInput'); const text = input.value.trim(); if(!text) return; const key = [currentUser.id, currentPrivateChatWith].sort().join('_'); if(!privateMessages[key]) privateMessages[key] = []; privateMessages[key].push({ fromId: currentUser.id, text, time: new Date().toLocaleTimeString() }); saveAll(); input.value = ''; renderPrivateMessages(currentPrivateChatWith); }
+    function searchUsers() { const query = document.getElementById('searchNickInput').value.trim().toLowerCase(); if(!query) return; const results = users.filter(u => u.id !== currentUser.id && u.nick.toLowerCase().includes(query) && !u.banned); const container = document.getElementById('searchResults'); container.innerHTML = ''; results.forEach(u => { const card = document.createElement('div'); card.className = 'search-result-card'; card.innerHTML = `<div class="friend-avatar">${u.avatarBase64 ? `<img src="${u.avatarBase64}" style="width:100%">` : '👤'}</div><div class="friend-info"><div class="friend-nick">${escapeHtml(u.nick)}</div></div><button class="addFriendBtn" data-id="${u.id}">➕ Добавить</button>`; container.appendChild(card); }); document.querySelectorAll('.addFriendBtn').forEach(btn => { btn.onclick = () => sendFriendRequest(parseInt(btn.dataset.id)); }); }
+    function sendFriendRequest(toId) { if(isBanned(currentUser.id)) { alert("Забанены"); return; } if(friendships[currentUser.id].includes(toId)) { alert("Уже друг"); return; } if(pendingRequests[toId]?.some(req => req.fromId === currentUser.id)) { alert("Заявка отправлена"); return; } const target = findUserById(toId); if(!target) return; if(!pendingRequests[toId]) pendingRequests[toId] = []; pendingRequests[toId].push({ fromId: currentUser.id, fromNick: currentUser.nick }); saveAll(); alert(`Заявка отправлена ${target.nick}`); renderPendingRequests(); refreshPrivateUI(); }
+    function renderPendingRequests() { const container = document.getElementById('pendingRequestsArea'); if(!container) return; const requests = pendingRequests[currentUser.id] || []; if(requests.length === 0) { container.innerHTML = '<div>📭 Нет заявок</div>'; return; } let html = '<strong>📨 Входящие:</strong><div>'; requests.forEach(req => { html += `<div>👤 ${escapeHtml(req.fromNick)} <button data-accept="${req.fromId}">✅ Принять</button><button data-reject="${req.fromId}">❌</button></div>`; }); html += '</div>'; container.innerHTML = html; document.querySelectorAll('[data-accept]').forEach(btn => { btn.onclick = () => acceptFriend(parseInt(btn.dataset.accept)); }); document.querySelectorAll('[data-reject]').forEach(btn => { btn.onclick = () => rejectFriend(parseInt(btn.dataset.reject)); }); }
+    function acceptFriend(fromId) { if(!friendships[currentUser.id].includes(fromId)) friendships[currentUser.id].push(fromId); if(!friendships[fromId]) friendships[fromId] = []; if(!friendships[fromId].includes(currentUser.id)) friendships[fromId].push(currentUser.id); pendingRequests[currentUser.id] = pendingRequests[currentUser.id].filter(r => r.fromId !== fromId); saveAll(); refreshPrivateUI(); }
+    function rejectFriend(fromId) { pendingRequests[currentUser.id] = pendingRequests[currentUser.id].filter(r => r.fromId !== fromId); saveAll(); renderPendingRequests(); }
+
+    // ---------- MEDIA ЛЕНТА (ПОСТЫ) ----------
+    function renderMediaFeed() {
+        const container = document.getElementById('mediaFeed');
+        if(!container) return;
+        if(posts.length === 0) { container.innerHTML = '<div style="text-align:center; padding:40px;">📭 Нет постов. Создайте первый!</div>'; return; }
+        container.innerHTML = '';
+        [...posts].reverse().forEach(post => {
+            const author = findUserById(post.authorId);
+            if(!author || author.banned) return;
+            const isLiked = post.likes?.includes(currentUser.id);
+            const likeCount = post.likes?.length || 0;
+            const canDelete = currentUser.isAdmin || currentUser.id === post.authorId;
+            const postDiv = document.createElement('div');
+            postDiv.className = 'media-post';
+            postDiv.innerHTML = `
+                <div class="post-header" data-authorid="${post.authorId}">
+                    <div class="post-avatar">${author.avatarBase64 ? `<img src="${author.avatarBase64}" style="width:100%">` : '👤'}</div>
+                    <div class="post-author">${escapeHtml(post.authorNick)}</div>
+                    <div class="post-time">${new Date(post.timestamp).toLocaleString()}</div>
+                </div>
+                <div class="post-content">
+                    <div class="post-text">${escapeHtml(post.text)}</div>
+                    ${post.imageData ? `<img class="post-image" src="${post.imageData}" alt="post image">` : ''}
+                </div>
+                <div class="post-actions">
+                    <button class="action-btn like-btn" data-postid="${post.id}">❤️ ${likeCount} Лайк</button>
+                    ${canDelete ? `<button class="action-btn delete-post-btn" data-postid="${post.id}">🗑️ Удалить</button>` : ''}
+                </div>
+            `;
+            container.appendChild(postDiv);
+        });
+        document.querySelectorAll('.post-header').forEach(header => { header.addEventListener('click', (e) => { e.stopPropagation(); const uid = parseInt(header.dataset.authorid); showUserProfile(uid); }); });
+        document.querySelectorAll('.like-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const postId = parseInt(btn.dataset.postid); toggleLike(postId); }); });
+        document.querySelectorAll('.delete-post-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const postId = parseInt(btn.dataset.postid); if(confirm("Удалить пост?")) deletePost(postId); }); });
+    }
+
+    function toggleLike(postId) {
+        const post = posts.find(p => p.id === postId);
+        if(!post) return;
+        if(!post.likes) post.likes = [];
+        const idx = post.likes.indexOf(currentUser.id);
+        if(idx === -1) post.likes.push(currentUser.id);
+        else post.likes.splice(idx, 1);
+        saveAll();
+        renderMediaFeed();
+    }
+
+    function deletePost(postId) {
+        if(!currentUser.isAdmin) return;
+        posts = posts.filter(p => p.id !== postId);
+        saveAll();
+        renderMediaFeed();
+    }
+
+    function showAddPostModal() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-card" style="width:500px;">
+                <h2>📝 Новый пост</h2>
+                <textarea id="postText" placeholder="Текст поста..." rows="4" style="width:100%; background:var(--bg-elevated); border:1px solid var(--accent); color:var(--text-primary); border-radius:20px; padding:12px;"></textarea>
+                <div style="margin:10px 0;">Изображение (необязательно):</div>
+                <input type="file" id="postImage" accept="image/*">
+                <button id="publishPostBtn" class="neon-oval-btn">📤 Опубликовать</button>
+                <button id="closePostModal" class="neon-oval-btn">Отмена</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        document.getElementById('publishPostBtn').onclick = () => {
+            const text = document.getElementById('postText').value.trim();
+            if(!text) { alert("Введите текст поста"); return; }
+            const imageFile = document.getElementById('postImage').files[0];
+            if(imageFile) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    posts.push({ id: Date.now(), authorId: currentUser.id, authorNick: currentUser.nick, text: text, imageData: e.target.result, timestamp: Date.now(), likes: [] });
+                    saveAll(); renderMediaFeed(); modal.remove();
+                };
+                reader.readAsDataURL(imageFile);
+            } else {
+                posts.push({ id: Date.now(), authorId: currentUser.id, authorNick: currentUser.nick, text: text, imageData: null, timestamp: Date.now(), likes: [] });
+                saveAll(); renderMediaFeed(); modal.remove();
+            }
+        };
+        document.getElementById('closePostModal').onclick = () => modal.remove();
+    }
+
+    // ---------- АДМИН ПАНЕЛЬ ----------
+    function showAdminPanel() {
+        if(!currentUser.isAdmin) return;
+        const modal = document.createElement('div'); modal.className = 'modal';
+        let usersHtml = '';
+        users.forEach(u => { usersHtml += `<div class="admin-user-item"><div>${escapeHtml(u.nick)} ${u.isAdmin ? '👑' : ''} ${u.banned ? '🚫' : ''}</div><div>${!u.isAdmin ? `<button class="neon-oval-btn" data-makeadmin="${u.id}">Назначить админом</button>` : (u.id !== currentUser.id ? `<button data-removeadmin="${u.id}">Снять админа</button>` : '')} ${u.banned ? `<button data-unban="${u.id}">Разбан</button>` : `<button data-ban="${u.id}">Бан</button>`}</div></div>`; });
+        modal.innerHTML = `<div class="modal-card"><h2>🛡️ Админ-панель</h2><div class="admin-user-list">${usersHtml}</div><button class="neon-oval-btn" id="closeAdminPanel">Закрыть</button></div>`;
+        document.body.appendChild(modal);
+        document.querySelectorAll('[data-makeadmin]').forEach(btn => { btn.onclick = () => { const uid = parseInt(btn.dataset.makeadmin); const u = findUserById(uid); if(u) { u.isAdmin = true; saveAll(); modal.remove(); showAdminPanel(); } }; });
+        document.querySelectorAll('[data-removeadmin]').forEach(btn => { btn.onclick = () => { const uid = parseInt(btn.dataset.removeadmin); const u = findUserById(uid); if(u && u.id !== currentUser.id) { u.isAdmin = false; saveAll(); modal.remove(); showAdminPanel(); } }; });
+        document.querySelectorAll('[data-ban]').forEach(btn => { btn.onclick = () => { const uid = parseInt(btn.dataset.ban); const u = findUserById(uid); if(u && u.id !== currentUser.id) { u.banned = true; saveAll(); modal.remove(); showAdminPanel(); renderGlobalMessages(); renderMediaFeed(); } }; });
+        document.querySelectorAll('[data-unban]').forEach(btn => { btn.onclick = () => { const uid = parseInt(btn.dataset.unban); const u = findUserById(uid); if(u) { u.banned = false; saveAll(); modal.remove(); showAdminPanel(); renderGlobalMessages(); renderMediaFeed(); } }; });
+        document.getElementById('closeAdminPanel').onclick = () => modal.remove();
+    }
+
+    // ---------- КАСТОМИЗАЦИЯ ПРОФИЛЯ (стильное неоновое окно) ----------
+    function showProfileSettings() {
+        const modal = document.createElement('div'); modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <h2>✨ Редактирование профиля</h2>
+                <div class="avatar-preview" id="modalAvatarPreview">
+                    ${currentUser.avatarBase64 ? `<img src="${currentUser.avatarBase64}" style="width:100%;height:100%;object-fit:cover">` : '<span>👤</span>'}
+                </div>
+                <input type="file" id="avatarUpload" accept="image/*" style="margin:10px 0;">
+                <input type="text" id="editNick" placeholder="Новый ник" value="${escapeHtml(currentUser.nick)}" style="width:100%; margin:8px 0; padding:8px; background:var(--bg-elevated); border:1px solid var(--accent); border-radius:40px; color:var(--text-primary);">
+                <textarea id="editBio" placeholder="Описание / статус" rows="2" style="width:100%; margin:8px 0; padding:8px; background:var(--bg-elevated); border:1px solid var(--accent); border-radius:20px; color:var(--text-primary);">${escapeHtml(currentUser.bio || '')}</textarea>
+                <div style="margin:10px 0;">🎨 Тема оформления:</div>
+                <select id="themeSelect" style="width:100%; padding:8px; background:var(--bg-elevated); border:1px solid var(--accent); border-radius:40px; color:var(--text-primary);">
+                    <option value="dark" ${currentUser.theme === 'dark' ? 'selected' : ''}>Чёрная неоновая</option>
+                    <option value="white" ${currentUser.theme === 'white' ? 'selected' : ''}>Белая неоновая</option>
+                    <option value="green" ${currentUser.theme === 'green' ? 'selected' : ''}>Зелёная неоновая</option>
+                </select>
+                <button id="saveSettingsBtn" class="neon-oval-btn" style="margin-top:20px;">💾 Сохранить</button>
+                <button id="closeSettingsBtn" class="neon-oval-btn">Отмена</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        const fileInput = document.getElementById('avatarUpload');
+        fileInput.onchange = (e) => {
+            const file = e.target.files[0];
+            if(file) {
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    document.getElementById('modalAvatarPreview').innerHTML = `<img src="${ev.target.result}" style="width:100%;height:100%;object-fit:cover">`;
+                    currentUser.avatarBase64 = ev.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        };
+        document.getElementById('saveSettingsBtn').onclick = () => {
+            const newNick = document.getElementById('editNick').value.trim();
+            if(newNick && newNick !== currentUser.nick) {
+                if(findUserByNick(newNick)) alert("Никнейм уже занят");
+                else currentUser.nick = newNick;
+            }
+            currentUser.bio = document.getElementById('editBio').value.trim();
+            currentUser.theme = document.getElementById('themeSelect').value;
+            const idx = users.findIndex(u => u.id === currentUser.id);
+            if(idx !== -1) {
+                users[idx].nick = currentUser.nick;
+                users[idx].avatarBase64 = currentUser.avatarBase64;
+                users[idx].bio = currentUser.bio;
+                users[idx].theme = currentUser.theme;
+            }
+            saveAll();
+            document.body.setAttribute('data-theme', currentUser.theme);
+            modal.remove();
+            renderUI(); // обновляем интерфейс
+        };
+        document.getElementById('closeSettingsBtn').onclick = () => modal.remove();
+    }
+
+    function escapeHtml(str) { if(!str) return ''; return str.replace(/[&<>]/g, (m) => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;' }[m])); }
+
+    // Загрузочная консоль
+    const bootMsgs = ["> Инициализация Incremental...", "> Загрузка Media-модуля...", "> Чёрная тема активирована", "> Система готова"];
+    let step = 0;
+    const consoleDiv = document.getElementById('consoleLines');
+    function typeLine(text, callback) { const line = document.createElement('div'); line.className = 'line'; consoleDiv.appendChild(line); let i = 0; function write() { if(i < text.length) { line.textContent += text[i]; i++; setTimeout(write, 40); } else { const curs = document.createElement('span'); curs.className = 'cursor-blink'; line.appendChild(curs); setTimeout(() => { curs.remove(); callback?.(); }, 180); } } write(); }
+    function nextBoot() { if(step >= bootMsgs.length) { setTimeout(() => { document.getElementById('loaderScreen').style.opacity = '0'; setTimeout(() => { document.getElementById('loaderScreen').style.display = 'none'; loadAllData(); startApp(); }, 500); }, 400); return; } typeLine(bootMsgs[step], () => { step++; nextBoot(); }); }
+    loadAllData(); nextBoot();
+</script>
+</body>
+</html>
