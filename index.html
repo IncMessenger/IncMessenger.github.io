@@ -294,6 +294,7 @@
         .friend-card:hover { border-color: var(--accent); box-shadow: 0 0 10px var(--accent); }
         .pm-chat { margin-top: 24px; background: var(--bg-elevated); border-radius: 24px; padding: 16px; border: 1px solid var(--accent); }
 
+        /* Модальное окно (общее) */
         .modal {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: #000000cc; backdrop-filter: blur(8px);
@@ -305,10 +306,21 @@
             text-align: center;
             box-shadow: 0 0 30px var(--accent);
         }
+        .modal-card input, .modal-card select, .modal-card textarea {
+            background: var(--bg-elevated);
+            border: 1px solid var(--accent);
+            color: var(--text-primary);
+            border-radius: 60px;
+            padding: 10px 16px;
+            width: 100%;
+            margin: 8px 0;
+            outline: none;
+        }
         .avatar-preview { width: 80px; height: 80px; margin: 10px auto; border-radius: 50%; border: 2px solid var(--accent); overflow: hidden; background: var(--bg-elevated); display: flex; align-items: center; justify-content: center; font-size: 48px; }
         .admin-user-list { max-height: 300px; overflow-y: auto; text-align: left; margin: 15px 0; }
         .admin-user-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid var(--border-glow); flex-wrap: wrap; gap: 8px; }
 
+        /* Загрузочный экран */
         .loader-screen {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: var(--bg-body); z-index: 2000;
@@ -379,7 +391,6 @@
     let pendingRequests = {};
     let posts = [];
 
-    // Базовая аватарка "INC"
     const DEFAULT_AVATAR = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23222222'/%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='%23ffffff' font-family='monospace'%3EINC%3C/text%3E%3C/svg%3E";
 
     function loadAllData() {
@@ -390,7 +401,6 @@
         friendships = JSON.parse(localStorage.getItem("inc_friends") || "{}");
         pendingRequests = JSON.parse(localStorage.getItem("inc_requests") || "{}");
         posts = JSON.parse(localStorage.getItem("inc_posts") || "[]");
-        // Для старых пользователей без аватарки добавляем базовую
         users.forEach(u => { if(!u.avatarBase64) u.avatarBase64 = DEFAULT_AVATAR; });
         saveAll();
     }
@@ -407,18 +417,27 @@
     function findUserByNick(nick) { return users.find(u => u.nick.toLowerCase() === nick.toLowerCase()); }
     function isBanned(userId) { const u = findUserById(userId); return u ? u.banned === true : false; }
 
-    // Авторизация (админ = ник "Incremental")
+    // ---------- СТИЛЬНАЯ АВТОРИЗАЦИЯ (НЕОНОВЫЕ ОВАЛЫ) ----------
     function showAuthScreen() {
         const modal = document.createElement('div'); modal.className = 'modal';
         modal.innerHTML = `
             <div class="modal-card">
-                <h2>INCREMENTAL</h2>
-                <div style="display:flex; gap:10px; margin-bottom:15px;">
-                    <button id="loginTabBtn" style="flex:1;">Вход</button>
-                    <button id="registerTabBtn" style="flex:1;">Регистрация</button>
+                <h2 style="margin-bottom:20px;">🔐 INCREMENTAL</h2>
+                <div style="display:flex; gap:12px; justify-content:center; margin-bottom:20px;">
+                    <button id="loginTabBtn" class="neon-oval-btn" style="margin:0;">Вход</button>
+                    <button id="registerTabBtn" class="neon-oval-btn" style="margin:0;">Регистрация</button>
                 </div>
-                <div id="loginForm"><input type="text" id="loginName" placeholder="Логин"><input type="password" id="loginPass" placeholder="Пароль"><button id="doLoginBtn">Войти</button></div>
-                <div id="registerForm" style="display:none;"><input type="text" id="regLogin" placeholder="Логин"><input type="password" id="regPass" placeholder="Пароль"><input type="text" id="regNick" placeholder="Никнейм"><button id="doRegBtn">Создать аккаунт</button></div>
+                <div id="loginForm">
+                    <input type="text" id="loginName" placeholder="Логин" autocomplete="off">
+                    <input type="password" id="loginPass" placeholder="Пароль">
+                    <button id="doLoginBtn" class="neon-oval-btn" style="margin-top:12px;">Войти</button>
+                </div>
+                <div id="registerForm" style="display:none;">
+                    <input type="text" id="regLogin" placeholder="Логин">
+                    <input type="password" id="regPass" placeholder="Пароль">
+                    <input type="text" id="regNick" placeholder="Никнейм">
+                    <button id="doRegBtn" class="neon-oval-btn" style="margin-top:12px;">Создать аккаунт</button>
+                </div>
             </div>
         `;
         document.body.appendChild(modal);
@@ -426,8 +445,8 @@
         const regTab = document.getElementById('registerTabBtn');
         const loginDiv = document.getElementById('loginForm');
         const regDiv = document.getElementById('registerForm');
-        loginTab.onclick = () => { loginTab.style.background = '#2a2a35'; regTab.style.background = ''; loginDiv.style.display = 'block'; regDiv.style.display = 'none'; };
-        regTab.onclick = () => { regTab.style.background = '#2a2a35'; loginTab.style.background = ''; loginDiv.style.display = 'none'; regDiv.style.display = 'block'; };
+        loginTab.onclick = () => { loginTab.style.background = 'var(--accent)'; loginTab.style.color = 'var(--btn-hover-text)'; regTab.style.background = 'transparent'; regTab.style.color = 'var(--text-primary)'; loginDiv.style.display = 'block'; regDiv.style.display = 'none'; };
+        regTab.onclick = () => { regTab.style.background = 'var(--accent)'; regTab.style.color = 'var(--btn-hover-text)'; loginTab.style.background = 'transparent'; loginTab.style.color = 'var(--text-primary)'; loginDiv.style.display = 'none'; regDiv.style.display = 'block'; };
         document.getElementById('doLoginBtn').onclick = () => {
             const login = document.getElementById('loginName').value.trim();
             const pass = document.getElementById('loginPass').value.trim();
@@ -531,7 +550,7 @@
         document.querySelectorAll('#globalMessagesArea .profile-clickable').forEach(btn => btn.addEventListener('click', (e) => { e.stopPropagation(); showUserProfile(parseInt(btn.dataset.userid)); }));
     }
 
-    // ---------- ПРОФИЛЬ (МОДАЛЬНОЕ ОКНО С ДРУЗЬЯМИ) ----------
+    // ---------- ПРОФИЛЬ (МОДАЛЬНОЕ ОКНО) ----------
     function showUserProfile(userId) {
         const user = findUserById(userId);
         if(!user) return;
@@ -566,7 +585,7 @@
         document.getElementById('closeProfileBtn').onclick = () => modal.remove();
     }
 
-    // ---------- ДРУЗЬЯ И ЛИЧНЫЕ СООБЩЕНИЯ ----------
+    // ---------- ДРУЗЬЯ И ЛИЧНЫЕ СООБЩЕНИЯ (кратко) ----------
     function refreshPrivateUI() { renderFriendsList(); renderPendingRequests(); if(currentPrivateChatWith) openPrivateChat(currentPrivateChatWith); else { document.getElementById('pmTitle').innerHTML = '💬 Личный диалог'; document.getElementById('pmInput').disabled = true; document.getElementById('sendPmBtn').disabled = true; } }
     function renderFriendsList() {
         const container = document.getElementById('friendsList'); if(!container) return;
@@ -584,7 +603,7 @@
     function acceptFriend(fromId) { if(!friendships[currentUser.id].includes(fromId)) friendships[currentUser.id].push(fromId); if(!friendships[fromId]) friendships[fromId] = []; if(!friendships[fromId].includes(currentUser.id)) friendships[fromId].push(currentUser.id); pendingRequests[currentUser.id] = pendingRequests[currentUser.id].filter(r => r.fromId !== fromId); saveAll(); refreshPrivateUI(); }
     function rejectFriend(fromId) { pendingRequests[currentUser.id] = pendingRequests[currentUser.id].filter(r => r.fromId !== fromId); saveAll(); renderPendingRequests(); }
 
-    // ---------- MEDIA ЛЕНТА (ПОСТЫ) ----------
+    // ---------- MEDIA ЛЕНТА ----------
     function renderMediaFeed() {
         const container = document.getElementById('mediaFeed');
         if(!container) return;
@@ -593,7 +612,6 @@
         [...posts].reverse().forEach(post => {
             const author = findUserById(post.authorId);
             if(!author || author.banned) return;
-            const isLiked = post.likes?.includes(currentUser.id);
             const likeCount = post.likes?.length || 0;
             const canDelete = currentUser.isAdmin || currentUser.id === post.authorId;
             const postDiv = document.createElement('div');
@@ -619,53 +637,21 @@
         document.querySelectorAll('.like-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const postId = parseInt(btn.dataset.postid); toggleLike(postId); }); });
         document.querySelectorAll('.delete-post-btn').forEach(btn => { btn.addEventListener('click', (e) => { e.stopPropagation(); const postId = parseInt(btn.dataset.postid); if(confirm("Удалить пост?")) deletePost(postId); }); });
     }
-
-    function toggleLike(postId) {
-        const post = posts.find(p => p.id === postId);
-        if(!post) return;
-        if(!post.likes) post.likes = [];
-        const idx = post.likes.indexOf(currentUser.id);
-        if(idx === -1) post.likes.push(currentUser.id);
-        else post.likes.splice(idx, 1);
-        saveAll();
-        renderMediaFeed();
-    }
-
-    function deletePost(postId) {
-        if(!currentUser.isAdmin) return;
-        posts = posts.filter(p => p.id !== postId);
-        saveAll();
-        renderMediaFeed();
-    }
-
+    function toggleLike(postId) { const post = posts.find(p => p.id === postId); if(!post) return; if(!post.likes) post.likes = []; const idx = post.likes.indexOf(currentUser.id); if(idx === -1) post.likes.push(currentUser.id); else post.likes.splice(idx, 1); saveAll(); renderMediaFeed(); }
+    function deletePost(postId) { if(!currentUser.isAdmin) return; posts = posts.filter(p => p.id !== postId); saveAll(); renderMediaFeed(); }
     function showAddPostModal() {
         const modal = document.createElement('div'); modal.className = 'modal';
-        modal.innerHTML = `
-            <div class="modal-card" style="width:500px;">
-                <h2>📝 Новый пост</h2>
-                <textarea id="postText" placeholder="Текст поста..." rows="4" style="width:100%; background:var(--bg-elevated); border:1px solid var(--accent); color:var(--text-primary); border-radius:20px; padding:12px;"></textarea>
-                <div style="margin:10px 0;">Изображение (необязательно):</div>
-                <input type="file" id="postImage" accept="image/*">
-                <button id="publishPostBtn" class="neon-oval-btn">📤 Опубликовать</button>
-                <button id="closePostModal" class="neon-oval-btn">Отмена</button>
-            </div>
-        `;
+        modal.innerHTML = `<div class="modal-card" style="width:500px;"><h2>📝 Новый пост</h2><textarea id="postText" placeholder="Текст поста..." rows="4" style="width:100%; background:var(--bg-elevated); border:1px solid var(--accent); border-radius:20px; padding:12px;"></textarea><div style="margin:10px 0;">Изображение:</div><input type="file" id="postImage" accept="image/*"><button id="publishPostBtn" class="neon-oval-btn">📤 Опубликовать</button><button id="closePostModal" class="neon-oval-btn">Отмена</button></div>`;
         document.body.appendChild(modal);
         document.getElementById('publishPostBtn').onclick = () => {
             const text = document.getElementById('postText').value.trim();
-            if(!text) { alert("Введите текст поста"); return; }
+            if(!text) { alert("Введите текст"); return; }
             const imageFile = document.getElementById('postImage').files[0];
             if(imageFile) {
                 const reader = new FileReader();
-                reader.onload = (e) => {
-                    posts.push({ id: Date.now(), authorId: currentUser.id, authorNick: currentUser.nick, text: text, imageData: e.target.result, timestamp: Date.now(), likes: [] });
-                    saveAll(); renderMediaFeed(); modal.remove();
-                };
+                reader.onload = (e) => { posts.push({ id: Date.now(), authorId: currentUser.id, authorNick: currentUser.nick, text: text, imageData: e.target.result, timestamp: Date.now(), likes: [] }); saveAll(); renderMediaFeed(); modal.remove(); };
                 reader.readAsDataURL(imageFile);
-            } else {
-                posts.push({ id: Date.now(), authorId: currentUser.id, authorNick: currentUser.nick, text: text, imageData: null, timestamp: Date.now(), likes: [] });
-                saveAll(); renderMediaFeed(); modal.remove();
-            }
+            } else { posts.push({ id: Date.now(), authorId: currentUser.id, authorNick: currentUser.nick, text: text, imageData: null, timestamp: Date.now(), likes: [] }); saveAll(); renderMediaFeed(); modal.remove(); }
         };
         document.getElementById('closePostModal').onclick = () => modal.remove();
     }
@@ -685,7 +671,7 @@
         document.getElementById('closeAdminPanel').onclick = () => modal.remove();
     }
 
-    // ---------- КАСТОМИЗАЦИЯ ПРОФИЛЯ (стильное неоновое окно) ----------
+    // ---------- КАСТОМИЗАЦИЯ ПРОФИЛЯ ----------
     function showProfileSettings() {
         const modal = document.createElement('div'); modal.className = 'modal';
         modal.innerHTML = `
@@ -694,11 +680,10 @@
                 <div class="avatar-preview" id="modalAvatarPreview">
                     ${currentUser.avatarBase64 ? `<img src="${currentUser.avatarBase64}" style="width:100%;height:100%;object-fit:cover">` : '<span>👤</span>'}
                 </div>
-                <input type="file" id="avatarUpload" accept="image/*" style="margin:10px 0;">
-                <input type="text" id="editNick" placeholder="Новый ник" value="${escapeHtml(currentUser.nick)}" style="width:100%; margin:8px 0; padding:8px; background:var(--bg-elevated); border:1px solid var(--accent); border-radius:40px; color:var(--text-primary);">
-                <textarea id="editBio" placeholder="Описание / статус" rows="2" style="width:100%; margin:8px 0; padding:8px; background:var(--bg-elevated); border:1px solid var(--accent); border-radius:20px; color:var(--text-primary);">${escapeHtml(currentUser.bio || '')}</textarea>
-                <div style="margin:10px 0;">🎨 Тема оформления:</div>
-                <select id="themeSelect" style="width:100%; padding:8px; background:var(--bg-elevated); border:1px solid var(--accent); border-radius:40px; color:var(--text-primary);">
+                <input type="file" id="avatarUpload" accept="image/*">
+                <input type="text" id="editNick" placeholder="Новый ник" value="${escapeHtml(currentUser.nick)}">
+                <textarea id="editBio" placeholder="Описание / статус" rows="2">${escapeHtml(currentUser.bio || '')}</textarea>
+                <select id="themeSelect">
                     <option value="dark" ${currentUser.theme === 'dark' ? 'selected' : ''}>Чёрная неоновая</option>
                     <option value="white" ${currentUser.theme === 'white' ? 'selected' : ''}>Белая неоновая</option>
                     <option value="green" ${currentUser.theme === 'green' ? 'selected' : ''}>Зелёная неоновая</option>
@@ -729,16 +714,11 @@
             currentUser.bio = document.getElementById('editBio').value.trim();
             currentUser.theme = document.getElementById('themeSelect').value;
             const idx = users.findIndex(u => u.id === currentUser.id);
-            if(idx !== -1) {
-                users[idx].nick = currentUser.nick;
-                users[idx].avatarBase64 = currentUser.avatarBase64;
-                users[idx].bio = currentUser.bio;
-                users[idx].theme = currentUser.theme;
-            }
+            if(idx !== -1) { users[idx].nick = currentUser.nick; users[idx].avatarBase64 = currentUser.avatarBase64; users[idx].bio = currentUser.bio; users[idx].theme = currentUser.theme; }
             saveAll();
             document.body.setAttribute('data-theme', currentUser.theme);
             modal.remove();
-            renderUI(); // обновляем интерфейс
+            renderUI();
         };
         document.getElementById('closeSettingsBtn').onclick = () => modal.remove();
     }
