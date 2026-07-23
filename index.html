@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEGACYWORLD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         
         body {
-            font-family: 'Press Start 2P', cursive;
+            font-family: 'Inter', sans-serif;
             background-color: #000000; color: #ffffff; min-height: 100vh; overflow-x: hidden;
             background-image: radial-gradient(circle at 15% 50%, rgba(255, 123, 0, 0.04) 0%, transparent 50%),
                               radial-gradient(circle at 85% 50%, rgba(0, 162, 255, 0.04) 0%, transparent 50%);
@@ -32,7 +32,7 @@
             border: 1px solid var(--orange); box-shadow: 0 0 20px var(--orange-soft), inset 0 0 20px var(--orange-soft);
         }
 
-        .logo { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 18px; letter-spacing: 2px; }
+        .logo { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 24px; }
         .logo .text-gradient {
             background: linear-gradient(90deg, var(--orange) 0%, var(--orange) 45%, var(--blue) 55%, var(--blue) 100%);
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
@@ -41,8 +41,8 @@
 
         nav ul { display: flex; gap: 25px; }
         nav ul li a {
-            font-size: 11px; font-weight: 700; transition: all 0.3s ease; color: #bbbbbb;
-            position: relative; cursor: pointer; letter-spacing: 1px;
+            font-size: 15px; font-weight: 700; transition: all 0.3s ease; color: #bbbbbb;
+            position: relative; cursor: pointer;
         }
         nav ul li a:hover, nav ul li a.active { color: var(--orange); text-shadow: 0 0 20px var(--orange-soft); }
         nav ul li a.active::after {
@@ -73,22 +73,22 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: linear-gradient(90deg, #000000 20%, rgba(10, 10, 10, 0.4) 60%, rgba(0, 0, 0, 0.8) 100%); z-index: 1;
         }
-        .hero-title { font-size: 36px; font-weight: 900; line-height: 1.5; margin-bottom: 25px; max-width: 700px; letter-spacing: 2px; text-shadow: 0 4px 30px rgba(0,0,0,0.9); position: relative; z-index: 2; }
+        .hero-title { font-size: 64px; font-weight: 900; line-height: 1.1; margin-bottom: 25px; max-width: 700px; text-shadow: 0 4px 30px rgba(0,0,0,0.9); position: relative; z-index: 2; }
         .hero-title .orange-text { color: var(--orange); text-shadow: 0 0 40px var(--orange-glow), 0 0 80px var(--orange-soft); }
         .hero-title .blue-text { color: var(--blue); text-shadow: 0 0 40px var(--blue-glow), 0 0 80px var(--blue-soft); }
-        .hero-desc { color: #d0d0d0; font-size: 14px; margin-bottom: 40px; max-width: 500px; font-weight: 500; line-height: 1.6; letter-spacing: 1px; text-shadow: 0 2px 10px rgba(0,0,0,0.8); position: relative; z-index: 2; }
+        .hero-desc { color: #d0d0d0; font-size: 18px; margin-bottom: 40px; max-width: 500px; font-weight: 500; line-height: 1.6; text-shadow: 0 2px 10px rgba(0,0,0,0.8); position: relative; z-index: 2; }
         .hero-actions { display: flex; align-items: center; gap: 25px; position: relative; z-index: 2; }
         
         .btn-primary {
-            background: linear-gradient(145deg, #ff8c1a, #e66a00); color: #000; padding: 16px 30px; border-radius: 12px;
-            font-weight: 800; font-size: 14px; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px;
-            transition: all 0.1s ease; letter-spacing: 1px;
+            background: linear-gradient(145deg, #ff8c1a, #e66a00); color: #000; padding: 16px 35px; border-radius: 12px;
+            font-weight: 800; font-size: 17px; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px;
+            transition: all 0.1s ease;
             box-shadow: 0 6px 0 #b34f00, 0 8px 20px rgba(255, 123, 0, 0.3); transform: translateY(-2px);
         }
         .btn-primary:active { transform: translateY(4px); box-shadow: 0 2px 0 #b34f00, 0 5px 15px rgba(255, 123, 0, 0.3); }
         .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 6px 0 #b34f00, 0 15px 40px rgba(255, 123, 0, 0.5); }
 
-        .ip-address { display: flex; align-items: center; gap: 12px; color: #ffffff; font-weight: 600; font-size: 13px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); }
+        .ip-address { display: flex; align-items: center; gap: 12px; color: #ffffff; font-weight: 600; font-size: 15px; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.08); }
         .ip-address span { color: #999; }
         .copy-icon { cursor: pointer; transition: 0.3s; color: #888; display: flex; align-items: center; }
         .copy-icon svg { width: 16px; height: 16px; fill: currentColor; }
@@ -97,15 +97,15 @@
         /* МОДЫ */
         .mods-section { max-width: 1300px; margin: 80px auto 0; padding: 0 40px; scroll-margin-top: 120px; }
         .section-header { margin-bottom: 45px; }
-        .section-header h2 { font-size: 26px; font-weight: 800; margin-bottom: 15px; color: #fff; letter-spacing: 2px; }
-        .section-header p { color: #777; font-size: 13px; letter-spacing: 1px; }
+        .section-header h2 { font-size: 36px; font-weight: 800; margin-bottom: 15px; color: #fff; }
+        .section-header p { color: #777; font-size: 16px; }
         .mods-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
         .mod-card { background: var(--card-bg); border-radius: 20px; padding: 35px 35px 30px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid rgba(255, 255, 255, 0.03); position: relative; }
         .mod-card:hover { transform: translateY(-8px); background: #161616; border-color: var(--blue); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9), inset 0 0 40px rgba(0, 162, 255, 0.03), 0 0 30px var(--blue-soft); }
-        .mod-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 8px; letter-spacing: 1px; }
-        .mod-subtitle { color: #888; font-size: 11px; display: block; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; letter-spacing: 1px; }
-        .mod-desc { color: #bbb; font-size: 13px; line-height: 1.7; margin-bottom: 30px; min-height: 70px; letter-spacing: 1px; }
-        .btn-download { background: var(--blue); color: #000000; width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 800; font-size: 13px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px var(--blue-soft); display: block; text-align: center; }
+        .mod-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 8px; }
+        .mod-subtitle { color: #888; font-size: 14px; display: block; margin-bottom: 15px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 12px; }
+        .mod-desc { color: #bbb; font-size: 15px; line-height: 1.6; margin-bottom: 30px; min-height: 70px; }
+        .btn-download { background: var(--blue); color: #000000; width: 100%; padding: 15px; border: none; border-radius: 12px; font-weight: 800; font-size: 15px; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px var(--blue-soft); display: block; text-align: center; }
         .btn-download:hover { transform: translateY(-2px); box-shadow: 0 0 30px var(--blue-glow); filter: brightness(1.1); }
 
         /* РАЗДЕЛ "ИГРАТЬ" */
@@ -117,10 +117,9 @@
         }
 
         .guide-title {
-            font-size: 28px;
+            font-size: 40px;
             text-align: center;
             margin-bottom: 50px;
-            letter-spacing: 2px;
         }
         .guide-title .orange-text { color: var(--orange); text-shadow: 0 0 40px var(--orange-glow); }
         .guide-title .blue-text { color: var(--blue); text-shadow: 0 0 40px var(--blue-glow); }
@@ -153,28 +152,28 @@
             transform: translateY(-5px);
         }
 
-        .guide-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 20px; letter-spacing: 1px; }
+        .guide-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
         .guide-card h3 .step-orange { color: var(--orange); }
         .guide-card h3 .step-blue { color: var(--blue); }
 
-        .guide-card p { color: #d0d0d0; font-size: 13px; line-height: 2; letter-spacing: 1px; margin-bottom: 15px; }
+        /* ТЕКСТ СТАЛ ЧУТЬ ЖИРНЕЕ (добавлен font-weight: 600) */
+        .guide-card p { color: #d0d0d0; font-size: 16px; line-height: 1.8; margin-bottom: 15px; font-weight: 600; }
         .guide-card ul { list-style: none; padding-left: 0; margin-bottom: 15px; }
-        .guide-card ul li { color: #d0d0d0; font-size: 13px; line-height: 2; letter-spacing: 1px; padding-left: 20px; position: relative; }
+        .guide-card ul li { color: #d0d0d0; font-size: 16px; line-height: 1.8; padding-left: 20px; position: relative; font-weight: 600; }
         .guide-card ul li::before { content: '▸'; position: absolute; left: 0; color: var(--blue); }
-        .guide-card a { color: var(--orange); text-shadow: 0 0 10px var(--orange-soft); transition: 0.3s; border-bottom: 1px dashed var(--orange); }
+        .guide-card a { color: var(--orange); text-shadow: 0 0 10px var(--orange-soft); transition: 0.3s; border-bottom: 1px dashed var(--orange); font-weight: 600; }
         .guide-card a:hover { color: var(--blue); border-bottom-color: var(--blue); text-shadow: 0 0 15px var(--blue-soft); }
-        .guide-card .highlight-ip { display: inline-block; background: rgba(0, 0, 0, 0.6); padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px; color: var(--orange); }
+        .guide-card .highlight-ip { display: inline-block; background: rgba(0, 0, 0, 0.6); padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px; color: var(--orange); font-weight: 700; }
 
         /* ФУТЕР */
         .bottom-bar { background: #050505; border-top: 1px solid rgba(255, 123, 0, 0.2); padding: 30px 0; text-align: center; margin-top: 60px; }
-        .bottom-bar .footer-logo { font-weight: 900; font-size: 18px; letter-spacing: 2px; background: linear-gradient(90deg, var(--orange) 0%, var(--orange) 45%, var(--blue) 55%, var(--blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(255, 123, 0, 0.3); }
+        .bottom-bar .footer-logo { font-weight: 900; font-size: 28px; background: linear-gradient(90deg, var(--orange) 0%, var(--orange) 45%, var(--blue) 55%, var(--blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(255, 123, 0, 0.3); }
 
         @media (max-width: 900px) {
             .nav-wrapper { flex-direction: column; gap: 20px; border-radius: 25px; padding: 20px;}
             nav ul { gap: 15px; flex-wrap: wrap; justify-content: center;}
-            nav ul li a { font-size: 10px; }
             .mods-grid { grid-template-columns: 1fr; }
-            .hero-title { font-size: 24px; }
+            .hero-title { font-size: 40px; }
             .hero-actions { flex-direction: column; align-items: stretch; }
             .btn-primary { justify-content: center; }
             .ip-address { justify-content: center; }
