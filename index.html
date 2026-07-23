@@ -5,16 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LEGACYWORLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Подключаем библиотеку particles.js -->
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000000; color: #ffffff; min-height: 100vh; overflow-x: hidden;
-            background-image: radial-gradient(circle at 15% 50%, rgba(255, 123, 0, 0.04) 0%, transparent 50%),
-                              radial-gradient(circle at 85% 50%, rgba(0, 162, 255, 0.04) 0%, transparent 50%);
+            background-color: #000000; 
+            color: #ffffff; 
+            min-height: 100vh; 
+            overflow-x: hidden;
         }
+
+        /* СЛОЙ ЧАСТИЦ (на заднем плане) */
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1; /* Самый нижний слой */
+        }
+
         a { text-decoration: none; color: inherit; }
         ul { list-style: none; }
 
@@ -32,12 +48,9 @@
             border: 1px solid var(--orange); box-shadow: 0 0 20px var(--orange-soft), inset 0 0 20px var(--orange-soft);
         }
 
-        .logo { display: flex; align-items: center; gap: 8px; font-weight: 900; font-size: 24px; }
-        .logo .text-gradient {
-            background: linear-gradient(90deg, var(--orange) 0%, var(--orange) 45%, var(--blue) 55%, var(--blue) 100%);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            text-shadow: 0 0 30px rgba(255, 123, 0, 0.3);
-        }
+        .logo { display: flex; align-items: center; font-weight: 900; font-size: 24px; }
+        .logo .orange-text { color: var(--orange); text-shadow: 0 0 15px var(--orange-soft); }
+        .logo .blue-text { color: var(--blue); text-shadow: 0 0 15px var(--blue-soft); }
 
         nav ul { display: flex; gap: 25px; }
         nav ul li a {
@@ -156,7 +169,6 @@
         .guide-card h3 .step-orange { color: var(--orange); }
         .guide-card h3 .step-blue { color: var(--blue); }
 
-        /* ТЕКСТ СТАЛ ЧУТЬ ЖИРНЕЕ (добавлен font-weight: 600) */
         .guide-card p { color: #d0d0d0; font-size: 16px; line-height: 1.8; margin-bottom: 15px; font-weight: 600; }
         .guide-card ul { list-style: none; padding-left: 0; margin-bottom: 15px; }
         .guide-card ul li { color: #d0d0d0; font-size: 16px; line-height: 1.8; padding-left: 20px; position: relative; font-weight: 600; }
@@ -167,7 +179,9 @@
 
         /* ФУТЕР */
         .bottom-bar { background: #050505; border-top: 1px solid rgba(255, 123, 0, 0.2); padding: 30px 0; text-align: center; margin-top: 60px; }
-        .bottom-bar .footer-logo { font-weight: 900; font-size: 28px; background: linear-gradient(90deg, var(--orange) 0%, var(--orange) 45%, var(--blue) 55%, var(--blue) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-shadow: 0 0 30px rgba(255, 123, 0, 0.3); }
+        .bottom-bar .footer-logo { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; }
+        .bottom-bar .footer-logo .orange-text { color: var(--orange); text-shadow: 0 0 25px var(--orange-glow); }
+        .bottom-bar .footer-logo .blue-text { color: var(--blue); text-shadow: 0 0 25px var(--blue-glow); }
 
         @media (max-width: 900px) {
             .nav-wrapper { flex-direction: column; gap: 20px; border-radius: 25px; padding: 20px;}
@@ -179,17 +193,24 @@
             .ip-address { justify-content: center; }
             .hero-card .overlay { background: linear-gradient(90deg, #000000 30%, rgba(10, 10, 10, 0.7) 100%); }
             header { position: relative; top: 0; }
+            .logo { flex-wrap: wrap; justify-content: center; }
         }
     </style>
 </head>
 <body>
 
+    <!-- КОНТЕЙНЕР ДЛЯ ЧАСТИЦ -->
+    <div id="particles-js"></div>
+
     <header>
         <div class="nav-wrapper">
-            <a href="#top" class="logo"><span class="text-gradient">LEGACYWORLD</span></a>
+            <a href="#top" class="logo">
+                <span class="orange-text">LEGACY</span><span class="blue-text">WORLD</span>
+            </a>
             <nav>
                 <ul>
                     <li><a href="#top" class="active">Главная</a></li>
+                    <!-- Исправлена ссылка на раздел Играть -->
                     <li><a href="#guide-section">Играть</a></li>
                     <li><a href="https://legacyworldstore.trademc.org/" target="_blank">Донат</a></li>
                     <li><a href="http://map.legacyworld.online:25175/" target="_blank">Карта</a></li>
@@ -247,7 +268,6 @@
         <h2 class="guide-title"><span class="orange-text">ИГРАТЬ</span></h2>
         
         <div class="guide-grid">
-            <!-- Пункт 1 -->
             <div class="guide-card">
                 <h3><span class="step-orange">Пункт 1</span></h3>
                 <p>После того как вашу заявку одобрили вам нужно будет сделать следующее:</p>
@@ -255,7 +275,6 @@
                 <p>После загрузки 2 пункт пропускать</p>
             </div>
 
-            <!-- Пункт 2 -->
             <div class="guide-card">
                 <h3><span class="step-blue">Пункт 2</span></h3>
                 <p>Обязательные моды для игры на сервере</p>
@@ -268,7 +287,6 @@
                 </ul>
             </div>
 
-            <!-- Пункт 3 -->
             <div class="guide-card">
                 <h3><span class="step-orange">Пункт 3</span></h3>
                 <p>ПОСЛЕ загрузки необходимых модов и эмоций вы можете спокойно заходить</p>
@@ -280,7 +298,9 @@
     </section>
 
     <div class="bottom-bar">
-        <div class="footer-logo">LEGACYWORLD</div>
+        <div class="footer-logo">
+            <span class="orange-text">LEGACY</span><span class="blue-text">WORLD</span>
+        </div>
     </div>
 
     <script>
@@ -294,6 +314,115 @@
                 setTimeout(() => { icon.innerHTML = originalSvg; icon.style.color = "#888"; }, 1500);
             });
         }
+    </script>
+
+    <!-- СКРИПТ ДЛЯ ЗАПУСКА ЧАСТИЦ -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
+                        }
+                    },
+                    "color": {
+                        "value": ["#ff7b00", "#00a2ff"]
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#ff7b00",
+                        "opacity": 0.2,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
+                    }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        }
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+        });
     </script>
 </body>
 </html>
