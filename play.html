@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Играть - LEGACYWORLD</title>
+    <title>Вики - LEGACYWORLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
     
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
@@ -14,7 +14,7 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0a1628; 
+            background: linear-gradient(145deg, #0a101c 0%, #040812 40%, #010306 70%, #000000 100%);
             color: #ffffff; 
             min-height: 100vh; 
             overflow-x: hidden;
@@ -36,29 +36,43 @@
             --blue-main: #3b82f6; --blue-light: #60a5fa; --blue-dark: #1e3a8a;
             --blue-soft: rgba(59, 130, 246, 0.3); --blue-glow: rgba(59, 130, 246, 0.6);
             --btn-blue: #2563eb; --btn-light: #60a5fa; --btn-dark: #1e40af;
-            --dark-bg: #0a1628; --card-bg: #111827;
+            --card-bg: rgba(255, 255, 255, 0.04);
         }
 
         header { max-width: 1300px; margin: 0 auto; padding: 25px 40px; position: sticky; top: 15px; z-index: 100; }
         .nav-wrapper {
-            background: rgba(10, 22, 40, 0.8); backdrop-filter: blur(15px); padding: 12px 25px;
+            background: rgba(6, 10, 20, 0.85); backdrop-filter: blur(15px); padding: 12px 25px;
             border-radius: 50px; display: flex; align-items: center; justify-content: space-between;
-            border: 1px solid var(--blue-soft); box-shadow: 0 0 20px var(--blue-soft), inset 0 0 20px var(--blue-soft);
+            border: 1px solid rgba(59, 130, 246, 0.15);
         }
 
-        .logo { display: flex; align-items: center; font-weight: 900; font-size: 24px; }
-        .logo .blue-text { color: var(--blue-light); text-shadow: 0 0 15px var(--blue-soft); }
-        .logo .white-text { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: inherit;
+            height: 100%;
+        }
+
+        .logo-line {
+            display: flex;
+            align-items: center;
+            font-weight: 900;
+            font-size: 24px;
+            line-height: 1;
+        }
+        .logo-line .blue-text { color: var(--blue-light); text-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
+        .logo-line .white-text { color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.15); }
 
         nav ul { display: flex; gap: 25px; }
         nav ul li a {
             font-size: 15px; font-weight: 700; transition: all 0.3s ease; color: #bbbbbb;
             position: relative; cursor: pointer;
         }
-        nav ul li a:hover, nav ul li a.active { color: var(--blue-light); text-shadow: 0 0 20px var(--blue-soft); }
+        nav ul li a:hover, nav ul li a.active { color: var(--blue-light); text-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
         nav ul li a.active::after {
             content: ''; position: absolute; bottom: -6px; left: 0; width: 100%; height: 2px;
-            background: var(--blue-light); box-shadow: 0 0 15px var(--blue-soft);
+            background: var(--blue-light); box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
         }
 
         .socials { display: flex; gap: 12px; }
@@ -67,63 +81,108 @@
             display: flex; align-items: center; justify-content: center; transition: 0.3s;
             border: 1px solid rgba(255, 255, 255, 0.05);
         }
-        .social-btn:hover { background: var(--blue-light); border-color: var(--blue-light); box-shadow: 0 0 25px var(--blue-soft); transform: scale(1.1) translateY(-2px); }
+        .social-btn:hover { background: var(--blue-light); border-color: var(--blue-light); box-shadow: 0 0 20px rgba(59, 130, 246, 0.2); transform: scale(1.1) translateY(-2px); }
         .social-btn svg { width: 18px; height: 18px; fill: #ccc; transition: 0.3s; }
         .social-btn:hover svg { fill: #000; }
 
-        .play-content {
-            max-width: 1000px;
+        /* СТРАНИЦА ВИКИ */
+        .wiki-content {
+            max-width: 900px;
             margin: 40px auto 80px;
             padding: 0 40px;
         }
 
-        .play-title {
-            font-size: 40px;
-            text-align: center;
-            margin-bottom: 50px;
-        }
-        .play-title .light-text { color: var(--blue-light); text-shadow: 0 0 40px var(--blue-glow); }
-        .play-title .white-text { color: #ffffff; }
-
-        .guide-grid { display: flex; flex-direction: column; gap: 40px; }
-        .guide-card { background: var(--card-bg); border-radius: 24px; padding: 35px 40px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid rgba(255, 255, 255, 0.05); position: relative; }
-
-        .guide-card:nth-child(1), .guide-card:nth-child(3) {
-            border-color: var(--blue-soft); box-shadow: 0 0 25px var(--blue-soft), inset 0 0 15px var(--blue-soft);
-        }
-        .guide-card:nth-child(1):hover, .guide-card:nth-child(3):hover {
-            box-shadow: 0 0 40px var(--blue-glow), inset 0 0 25px var(--blue-soft); transform: translateY(-5px);
-        }
-        .guide-card:nth-child(2) {
-            border-color: var(--blue-main); box-shadow: 0 0 25px var(--blue-soft), inset 0 0 15px var(--blue-soft);
-        }
-        .guide-card:nth-child(2):hover {
-            box-shadow: 0 0 40px var(--blue-glow), inset 0 0 25px var(--blue-soft); transform: translateY(-5px);
+        /* ЗАГОЛОВКИ-ПЛАШКИ (КАК НА СКРИНШОТЕ) */
+        .section-badge {
+            display: inline-block;
+            background: var(--blue-main);
+            color: #ffffff;
+            padding: 12px 28px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 18px;
+            margin-bottom: 25px;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
         }
 
-        .guide-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
-        .guide-card h3 .step-blue { color: var(--blue-light); }
-        .guide-card h3 .step-dark { color: #ffffff; }
+        .wiki-grid { display: flex; flex-direction: column; gap: 60px; }
+        .wiki-block { display: flex; flex-direction: column; }
 
-        .guide-card p { color: #d0d0d0; font-size: 16px; line-height: 1.8; margin-bottom: 15px; font-weight: 600; }
-        .guide-card ul { list-style: none; padding-left: 0; margin-bottom: 15px; }
-        .guide-card ul li { color: #d0d0d0; font-size: 16px; line-height: 1.8; padding-left: 20px; position: relative; font-weight: 600; }
-        .guide-card ul li::before { content: '▸'; position: absolute; left: 0; color: var(--blue-light); }
-        .guide-card a { color: var(--blue-light); text-shadow: 0 0 10px var(--blue-soft); transition: 0.3s; border-bottom: 1px dashed var(--blue-light); font-weight: 600; }
-        .guide-card a:hover { color: #ffffff; border-bottom-color: #ffffff; }
-        .guide-card .highlight-ip { display: inline-block; background: rgba(0, 0, 0, 0.6); padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px; color: var(--blue-light); font-weight: 700; }
+        /* СТИЛИ ТЕКСТА (КАК НА СКРИНШОТЕ) */
+        .wiki-text {
+            color: #d0d0d0;
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: 500;
+        }
 
-        .bottom-bar { background: #050505; border-top: 1px solid var(--blue-soft); padding: 30px 0; text-align: center; margin-top: 60px; }
+        .wiki-text strong, .wiki-text b {
+            color: #ffffff;
+            font-weight: 700;
+        }
+
+        .wiki-text ul {
+            list-style: none;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .wiki-text ul li {
+            position: relative;
+            padding-left: 10px;
+            margin-bottom: 8px;
+            color: #d0d0d0;
+            font-size: 16px;
+            line-height: 1.8;
+            font-weight: 500;
+        }
+
+        .wiki-text ul li::before {
+            content: '•';
+            position: absolute;
+            left: -15px;
+            color: #ffffff;
+            font-weight: 900;
+        }
+
+        .wiki-link {
+            color: var(--blue-light);
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .wiki-link:hover {
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(59, 130, 246, 0.3);
+        }
+
+        .wiki-link svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+
+        .wiki-image {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+
+        .bottom-bar { background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 0; text-align: center; margin-top: 60px; backdrop-filter: blur(10px); }
         .bottom-bar .footer-logo { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; }
-        .bottom-bar .footer-logo .blue-text { color: var(--blue-light); text-shadow: 0 0 25px var(--blue-glow); }
-        .bottom-bar .footer-logo .white-text { color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+        .bottom-bar .footer-logo .blue-text { color: var(--blue-light); text-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
+        .bottom-bar .footer-logo .white-text { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.1); }
 
         @media (max-width: 900px) {
             .nav-wrapper { flex-direction: column; gap: 20px; border-radius: 25px; padding: 20px;}
             nav ul { gap: 15px; flex-wrap: wrap; justify-content: center;}
-            .play-title { font-size: 30px; }
             header { position: relative; top: 0; }
-            .logo { flex-wrap: wrap; justify-content: center; }
+            .logo-container { align-items: center; }
         }
     </style>
 </head>
@@ -132,13 +191,15 @@
 
     <header>
         <div class="nav-wrapper">
-            <a href="index.html" class="logo">
-                <span class="blue-text">LEGACY</span><span class="white-text">WORLD</span>
+            <a href="index.html" class="logo-container">
+                <div class="logo-line">
+                    <span class="blue-text">LEGACY</span><span class="white-text">WORLD</span>
+                </div>
             </a>
             <nav>
                 <ul>
                     <li><a href="index.html">Главная</a></li>
-                    <li><a href="play.html" class="active">Играть</a></li>
+                    <li><a href="play.html" class="active">Вики</a></li>
                     <li><a href="index.html#map-section">Карта</a></li>
                     <li><a href="https://legacyworldstore.trademc.org/" target="_blank">Донат</a></li>
                 </ul>
@@ -151,36 +212,97 @@
         </div>
     </header>
 
-    <section class="play-content">
-        <h1 class="play-title"><span class="white-text">ИГРАТЬ</span></h1>
+    <section class="wiki-content">
         
-        <div class="guide-grid">
-            <div class="guide-card">
-                <h3><span class="step-blue">Пункт 1</span></h3>
-                <p>После того как вашу заявку одобрили вам нужно будет сделать следующее:</p>
-                <p>Рекомендуется скачать нашу оптимизированную сборку для комфортной игры на сервере, где есть все необходимое и немного оптимизации <a href="https://drive.google.com/file/d/1lpQc5f6NFPOf7AfJZ5uGKC-ZrWkjXy08/view?usp=sharing" target="_blank">СКАЧАТЬ</a></p>
-                <p>После загрузки 2 пункт пропускать</p>
+        <div class="wiki-grid">
+            
+            <!-- РАЗДЕЛ: МОДЫ -->
+            <div class="wiki-block">
+                <div class="section-badge">Моды и ресурсы</div>
+                
+                <div class="wiki-text">
+                    <strong>Мод на эмоции</strong>
+                    <ul>
+                        <li><a href="https://modrinth.com/plugin/emotecraft" target="_blank" class="wiki-link">emotecraft скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a> (дополнительные эмоции можно скачать <a href="https://drive.google.com/file/d/1C-zSHO-LcYKsMobNFxXyu4FcleBIhFtg/view" target="_blank" class="wiki-link">ЗДЕСЬ</a> распаковывать в папку .minecraft/emotes)</li>
+                        <li>Аддон на сгибание конечностей — <a href="https://modrinth.com/mod/bendable-cuboids" target="_blank" class="wiki-link">Bendable Cuboids</a></li>
+                    </ul>
+
+                    <br><strong>Мод на голосовой чат</strong>
+                    <ul>
+                        <li><a href="https://modrinth.com/plugin/simple-voice-chat/versions" target="_blank" class="wiki-link">simplevoicechat скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a></li>
+                    </ul>
+
+                    <br><strong>Мод на кастомные модели игроков</strong>
+                    <ul>
+                        <li><a href="https://modrinth.com/plugin/custom-player-models" target="_blank" class="wiki-link">customizableplayermodels скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a><br>Аддон для работы с голосовым чатом — CPM SVCc addon</li>
+                    </ul>
+
+                    <br><strong>Наш ресурспак</strong>
+                    <ul>
+                        <li><a href="https://drive.google.com/file/d/1WQJyVJIeqB3dlHZH8aRMktjFSgnWANFw/view?usp=sharing" target="_blank" class="wiki-link">Скачать ресурспак <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a></li>
+                    </ul>
+
+                    <br><strong>Необходимые моды для работы ресурс пака:</strong>
+                    <ul>
+                        <li><a href="https://modrinth.com/mod/entity-model-features" target="_blank" class="wiki-link">Entity Model Features</a></li>
+                        <li><a href="https://modrinth.com/mod/entitytexturefeatures" target="_blank" class="wiki-link">Entity Texture Features</a></li>
+                        <li><a href="https://modrinth.com/mod/rpf" target="_blank" class="wiki-link">Resource Packs Fusion</a></li>
+                        <li><a href="https://modrinth.com/mod/rp-renames" target="_blank" class="wiki-link">RP Renames</a></li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="guide-card">
-                <h3><span class="step-dark">Пункт 2</span></h3>
-                <p>Обязательные моды для игры на сервере</p>
-                <p>Моды скачивать на версию 1.21.11, внимательно выбирайте версию fabric, quilt, forge и прочие</p>
-                <ul>
-                    <li>Мод на эмоции - <a href="https://modrinth.com/plugin/emotecraft" target="_blank">emotecraft скачать</a> (дополнительные эмоции можно скачать <a href="https://drive.google.com/file/d/1C-zSHO-LcYKsMobNFxXyu4FcleBIhFtg/view" target="_blank">ЗДЕСЬ</a> распаковывать в папку .minecraft/emotes)</li>
-                    <li>Аддон на сгибание конечностей - <a href="https://modrinth.com/mod/bendable-cuboids" target="_blank">Bendable Cuboids скачать</a></li>
-                    <li>Мод на голосовой чат - <a href="https://modrinth.com/plugin/simple-voice-chat/versions" target="_blank">simplevoicechat скачать</a></li>
-                    <li>Мод на кастомные модели игроков - <a href="https://modrinth.com/plugin/custom-player-models" target="_blank">customizableplayermodels скачать</a>. Аддон для работы с голосовым чатом - CPM SVCc addon</li>
-                </ul>
+            <!-- РАЗДЕЛ: ФИШКИ -->
+            <div class="wiki-block">
+                <div class="section-badge">Фишки</div>
+                
+                <div class="wiki-text">
+                    
+                    <strong>Подписанная книга</strong>
+                    <ul>
+                        <li>Если кликнуть на шифте белым красителем по кафедре в которой есть подписанная книга - то вы скроете* автора книги</li>
+                        <li>Если кликнуть на шифте ножницами по кафедре в которой есть книга, то вы уберете подпись с нее и вы сможете ее заново редактировать</li>
+                    </ul>
+
+                    <br><strong>Подозрительный песок</strong>
+                    <ul>
+                        <li>Взяв лопату в левую руку, а в правую любой предмет и кликнув по обычному песку или гравию вы можете их закопать в этот песок</li>
+                    </ul>
+
+                    <br><strong>Голова игрока</strong>
+                    <p style="margin-top: 10px;">Чтобы получить голову игрока вам нужно</p>
+                    <ul>
+                        <li>Из 4 комочков глины и ведра воды сделать глиняную смесь</li>
+                        <li>Полученную смесь наносим на голову (кликаем по воздуху)</li>
+                        <li>Через несколько секунд вы получите слепок вашего лица, который нужно высушить (поставить где-нибудь)</li>
+                        <li>Как только эта голова высохнет (Капельки воды перестанут появляться) вы можете ее покрасить (в правую руку кисточку а в левую краситель, кликаем три раза с разными красителями)</li>
+                    </ul>
+                    <img src="https://cdn.discordapp.com/attachments/980441926379634692/1479144519524945961/image.png?ex=6a64dbae&is=6a638a2e&hm=d80c9ab78badca28ee376343779db400120495dd77c2db93d59a6a14a27e4766&" alt="Голова игрока" class="wiki-image">
+
+                    <br><strong>Телефон Lefone</strong>
+                    <ul>
+                        <li>Позволяет открыть банк, либо просто покликать кнопки</li>
+                        <li>3 разные вариации, функционал одинаковый (у раскладушки есть небольшая анимка)</li>
+                        <li>Можно бросить как бутылочку, на ее месте будут спавниться частицы дыма</li>
+                    </ul>
+                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1527353376365351003/image.png?ex=6a643d6d&is=6a62ebed&hm=b722eba13650cf41c9921438b7e7d17fc840917e5d9d4db673a7fd6eeeca53f8&" alt="Телефон Lefone" class="wiki-image">
+
+                    <br><strong>Дымовая граната</strong>
+                    <ul>
+                        <li>Можно бросить как бутылочку, на ее месте будут спавниться частицы дыма</li>
+                    </ul>
+                    <img src="https://cdn.discordapp.com/attachments/980441926379634692/1479111800543776971/image.png?ex=6a64bd35&is=6a636bb5&hm=c41b847238365c123be84db3970cb2b6a1fbff6da974bd64fd401dbe372676d9&" alt="Дымовая граната" class="wiki-image">
+
+                    <br><strong>Стамеска</strong>
+                    <ul>
+                        <li>Стамеска может убирать шаблоны с вашей брони</li>
+                        <li>Крафт - медный слиток и палка (изображение ниже)</li>
+                    </ul>
+                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1524031693869289533/image.png?ex=6a64ae1e&is=6a635c9e&hm=a46fa1780b821c3579daeac6a0f8faa2b1c752f2e400778390a8f90a19a281b6&" alt="Стамеска" class="wiki-image">
+                    
+                </div>
             </div>
 
-            <div class="guide-card">
-                <h3><span class="step-blue">Пункт 3</span></h3>
-                <p>ПОСЛЕ загрузки необходимых модов и эмоций вы можете спокойно заходить</p>
-                <p>Заходить с версии 1.21.11. Айпи:</p>
-                <div class="highlight-ip">play.legacyworld.online</div>
-                <p style="margin-top: 15px;">Можно зайти как с лицензии, так и с пиратки!</p>
-            </div>
         </div>
     </section>
 
