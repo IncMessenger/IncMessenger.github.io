@@ -126,7 +126,32 @@
         .copy-icon svg { width: 16px; height: 16px; fill: currentColor; }
         .copy-icon:hover { color: var(--blue-light); text-shadow: 0 0 10px rgba(59, 130, 246, 0.2); }
 
-        .map-section { max-width: 1300px; margin: 80px auto 20px; padding: 0 40px; }
+        /* НОВЫЙ БЛОК ОПИСАНИЯ */
+        .about-section {
+            max-width: 1000px;
+            margin: 60px auto 40px;
+            padding: 0 40px;
+        }
+
+        .about-text {
+            color: #d0d0d0;
+            font-size: 16px;
+            line-height: 1.9;
+            font-weight: 500;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
+        }
+
+        .about-text p {
+            margin-bottom: 20px;
+        }
+
+        .about-text .highlight {
+            color: var(--blue-light);
+            font-weight: 600;
+        }
+
+        /* КАРТА */
+        .map-section { max-width: 1300px; margin: 60px auto 20px; padding: 0 40px; }
         .map-container { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 20px; overflow: hidden; border: 1px solid rgba(255, 255, 255, 0.05); box-shadow: 0 0 30px rgba(0, 0, 0, 0.3); }
         .map-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
 
@@ -190,6 +215,15 @@
                     <span class="copy-icon" onclick="copyIP()"><svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg></span>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <section class="about-section">
+        <div class="about-text">
+            <p><span class="highlight">LegacyWorld</span> — это приватный ванильный Minecraft-сервер, где каждый найдёт занятие по душе. Здесь ты можешь участвовать в захватывающих RP-сюжетах, масштабных ивентах или просто найти новых друзей для совместного выживания.</p>
+            <p>Мы регулярно проводим большие серверные события с уникальными кастомными мобами, эпичными боссами и интересными механиками. На сервере тебя ждут красивые города, масштабные постройки и множество организаций, в которые можно вступить и стать частью истории мира.</p>
+            <p>Самое главное — <span class="highlight">никаких приватов и доната, дающего преимущества</span>. Всё, чего ты добьёшься, зависит только от тебя и твоей команды.</p>
+            <p>Строй, исследуй, общайся, выживай, создавай собственные истории, участвуй в ивентах и даже предлагай свои идеи для будущих событий. На <span class="highlight">LegacyWorld</span> именно игроки делают мир живым, и здесь всё в твоих руках!</p>
         </div>
     </section>
 
