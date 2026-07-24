@@ -33,6 +33,10 @@
         ul { list-style: none; }
 
         :root {
+            --yellow: #ffcc00;
+            --yellow-glow: rgba(255, 204, 0, 0.4);
+            --blue: #00a2ff;
+            --blue-glow: rgba(0, 162, 255, 0.4);
             --blue-main: #3b82f6; --blue-light: #60a5fa; --blue-dark: #1e3a8a;
             --blue-soft: rgba(59, 130, 246, 0.3); --blue-glow: rgba(59, 130, 246, 0.6);
             --btn-blue: #2563eb; --btn-light: #60a5fa; --btn-dark: #1e40af;
@@ -61,8 +65,8 @@
             font-size: 24px;
             line-height: 1;
         }
-        .logo-line .blue-text { color: var(--blue-light); text-shadow: 0 0 10px rgba(59, 130, 246, 0.3); }
-        .logo-line .white-text { color: #ffffff; text-shadow: 0 0 8px rgba(255,255,255,0.15); }
+        .logo-line .yellow-text { color: var(--yellow); text-shadow: 0 0 12px var(--yellow-glow); }
+        .logo-line .blue-text { color: var(--blue); text-shadow: 0 0 12px var(--blue-glow); }
 
         nav ul { display: flex; gap: 25px; }
         nav ul li a {
@@ -175,8 +179,8 @@
 
         .bottom-bar { background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 0; text-align: center; margin-top: 60px; backdrop-filter: blur(10px); }
         .bottom-bar .footer-logo { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; }
-        .bottom-bar .footer-logo .blue-text { color: var(--blue-light); text-shadow: 0 0 15px rgba(59, 130, 246, 0.2); }
-        .bottom-bar .footer-logo .white-text { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.1); }
+        .bottom-bar .footer-logo .yellow-text { color: var(--yellow); text-shadow: 0 0 20px var(--yellow-glow); }
+        .bottom-bar .footer-logo .blue-text { color: var(--blue); text-shadow: 0 0 20px var(--blue-glow); }
 
         @media (max-width: 900px) {
             .nav-wrapper { flex-direction: column; gap: 20px; border-radius: 25px; padding: 20px;}
@@ -193,7 +197,7 @@
         <div class="nav-wrapper">
             <a href="index.html" class="logo-container">
                 <div class="logo-line">
-                    <span class="blue-text">LEGACY</span><span class="white-text">WORLD</span>
+                    <span class="yellow-text">LEGACY</span><span class="blue-text">WORLD</span>
                 </div>
             </a>
             <nav>
@@ -308,7 +312,7 @@
 
     <div class="bottom-bar">
         <div class="footer-logo">
-            <span class="blue-text">LEGACY</span><span class="white-text">WORLD</span>
+            <span class="yellow-text">LEGACY</span><span class="blue-text">WORLD</span>
         </div>
     </div>
 
