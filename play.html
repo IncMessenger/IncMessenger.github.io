@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Играть - LEGACYWORLD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a1628; 
+            color: #ffffff; 
+            min-height: 100vh; 
+            overflow-x: hidden;
+        }
+
+        #particles-js {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        :root {
+            --blue-main: #3b82f6; --blue-light: #60a5fa; --blue-dark: #1e3a8a;
+            --blue-soft: rgba(59, 130, 246, 0.3); --blue-glow: rgba(59, 130, 246, 0.6);
+            --btn-blue: #2563eb; --btn-light: #60a5fa; --btn-dark: #1e40af;
+            --dark-bg: #0a1628; --card-bg: #111827;
+        }
+
+        header { max-width: 1300px; margin: 0 auto; padding: 25px 40px; position: sticky; top: 15px; z-index: 100; }
+        .nav-wrapper {
+            background: rgba(10, 22, 40, 0.8); backdrop-filter: blur(15px); padding: 12px 25px;
+            border-radius: 50px; display: flex; align-items: center; justify-content: space-between;
+            border: 1px solid var(--blue-soft); box-shadow: 0 0 20px var(--blue-soft), inset 0 0 20px var(--blue-soft);
+        }
+
+        .logo { display: flex; align-items: center; font-weight: 900; font-size: 24px; }
+        .logo .blue-text { color: var(--blue-light); text-shadow: 0 0 15px var(--blue-soft); }
+        .logo .white-text { color: #ffffff; text-shadow: 0 0 10px rgba(255,255,255,0.2); }
+
+        nav ul { display: flex; gap: 25px; }
+        nav ul li a {
+            font-size: 15px; font-weight: 700; transition: all 0.3s ease; color: #bbbbbb;
+            position: relative; cursor: pointer;
+        }
+        nav ul li a:hover, nav ul li a.active { color: var(--blue-light); text-shadow: 0 0 20px var(--blue-soft); }
+        nav ul li a.active::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; width: 100%; height: 2px;
+            background: var(--blue-light); box-shadow: 0 0 15px var(--blue-soft);
+        }
+
+        .socials { display: flex; gap: 12px; }
+        .social-btn {
+            width: 36px; height: 36px; background: rgba(255, 255, 255, 0.05); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .social-btn:hover { background: var(--blue-light); border-color: var(--blue-light); box-shadow: 0 0 25px var(--blue-soft); transform: scale(1.1) translateY(-2px); }
+        .social-btn svg { width: 18px; height: 18px; fill: #ccc; transition: 0.3s; }
+        .social-btn:hover svg { fill: #000; }
+
+        .play-content {
+            max-width: 1000px;
+            margin: 40px auto 80px;
+            padding: 0 40px;
+        }
+
+        .play-title {
+            font-size: 40px;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        .play-title .light-text { color: var(--blue-light); text-shadow: 0 0 40px var(--blue-glow); }
+        .play-title .white-text { color: #ffffff; }
+
+        .guide-grid { display: flex; flex-direction: column; gap: 40px; }
+        .guide-card { background: var(--card-bg); border-radius: 24px; padding: 35px 40px; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid rgba(255, 255, 255, 0.05); position: relative; }
+
+        .guide-card:nth-child(1), .guide-card:nth-child(3) {
+            border-color: var(--blue-soft); box-shadow: 0 0 25px var(--blue-soft), inset 0 0 15px var(--blue-soft);
+        }
+        .guide-card:nth-child(1):hover, .guide-card:nth-child(3):hover {
+            box-shadow: 0 0 40px var(--blue-glow), inset 0 0 25px var(--blue-soft); transform: translateY(-5px);
+        }
+        .guide-card:nth-child(2) {
+            border-color: var(--blue-main); box-shadow: 0 0 25px var(--blue-soft), inset 0 0 15px var(--blue-soft);
+        }
+        .guide-card:nth-child(2):hover {
+            box-shadow: 0 0 40px var(--blue-glow), inset 0 0 25px var(--blue-soft); transform: translateY(-5px);
+        }
+
+        .guide-card h3 { font-size: 24px; font-weight: 700; margin-bottom: 20px; }
+        .guide-card h3 .step-blue { color: var(--blue-light); }
+        .guide-card h3 .step-dark { color: #ffffff; }
+
+        .guide-card p { color: #d0d0d0; font-size: 16px; line-height: 1.8; margin-bottom: 15px; font-weight: 600; }
+        .guide-card ul { list-style: none; padding-left: 0; margin-bottom: 15px; }
+        .guide-card ul li { color: #d0d0d0; font-size: 16px; line-height: 1.8; padding-left: 20px; position: relative; font-weight: 600; }
+        .guide-card ul li::before { content: '▸'; position: absolute; left: 0; color: var(--blue-light); }
+        .guide-card a { color: var(--blue-light); text-shadow: 0 0 10px var(--blue-soft); transition: 0.3s; border-bottom: 1px dashed var(--blue-light); font-weight: 600; }
+        .guide-card a:hover { color: #ffffff; border-bottom-color: #ffffff; }
+        .guide-card .highlight-ip { display: inline-block; background: rgba(0, 0, 0, 0.6); padding: 8px 16px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.1); margin-top: 10px; color: var(--blue-light); font-weight: 700; }
+
+        .bottom-bar { background: #050505; border-top: 1px solid var(--blue-soft); padding: 30px 0; text-align: center; margin-top: 60px; }
+        .bottom-bar .footer-logo { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; }
+        .bottom-bar .footer-logo .blue-text { color: var(--blue-light); text-shadow: 0 0 25px var(--blue-glow); }
+        .bottom-bar .footer-logo .white-text { color: #ffffff; text-shadow: 0 0 15px rgba(255,255,255,0.2); }
+
+        @media (max-width: 900px) {
+            .nav-wrapper { flex-direction: column; gap: 20px; border-radius: 25px; padding: 20px;}
+            nav ul { gap: 15px; flex-wrap: wrap; justify-content: center;}
+            .play-title { font-size: 30px; }
+            header { position: relative; top: 0; }
+            .logo { flex-wrap: wrap; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <header>
+        <div class="nav-wrapper">
+            <a href="index.html" class="logo">
+                <span class="blue-text">LEGACY</span><span class="white-text">WORLD</span>
+            </a>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="play.html" class="active">Играть</a></li>
+                    <li><a href="index.html#map-section">Карта</a></li>
+                    <li><a href="https://legacyworldstore.trademc.org/" target="_blank">Донат</a></li>
+                </ul>
+            </nav>
+            <div class="socials">
+                <a href="https://www.youtube.com/@sparki2791/videos" target="_blank" class="social-btn"><svg viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg></a>
+                <a href="https://hotmc.ru/minecraft-server-253620" target="_blank" class="social-btn"><svg viewBox="0 0 24 24"><path d="M2,2 L6,2 L6,10 L18,10 L18,2 L22,2 L22,22 L18,22 L18,13 L6,13 L6,22 L2,22 L2,2 Z" /></svg></a>
+                <a href="https://www.tiktok.com/@sparki_lw" target="_blank" class="social-btn"><svg viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93v6.16c0 2.47-1.03 4.9-2.96 6.63-1.7 1.53-4.02 2.29-6.27 1.96-1.88-.27-3.63-1.14-4.88-2.64-1.7-2.01-2.42-4.87-1.82-7.49.50-2.21 1.91-4.21 3.85-5.51 1.27-.85 2.75-1.34 4.26-1.36.01 1.34.01 2.68.01 4.02-.93.15-1.86.46-2.63 1.03-.98.72-1.63 1.79-1.78 2.99-.17 1.37.30 2.79 1.29 3.76.89.87 2.14 1.29 3.37 1.10.82-.13 1.59-.51 2.18-1.12.81-.84 1.25-1.99 1.18-3.17v-7.42c.02-1.35.02-2.69.02-4.04z"/></svg></a>
+            </div>
+        </div>
+    </header>
+
+    <section class="play-content">
+        <h1 class="play-title"><span class="white-text">ИГРАТЬ</span></h1>
+        
+        <div class="guide-grid">
+            <div class="guide-card">
+                <h3><span class="step-blue">Пункт 1</span></h3>
+                <p>После того как вашу заявку одобрили вам нужно будет сделать следующее:</p>
+                <p>Рекомендуется скачать нашу оптимизированную сборку для комфортной игры на сервере, где есть все необходимое и немного оптимизации <a href="https://drive.google.com/file/d/1lpQc5f6NFPOf7AfJZ5uGKC-ZrWkjXy08/view?usp=sharing" target="_blank">СКАЧАТЬ</a></p>
+                <p>После загрузки 2 пункт пропускать</p>
+            </div>
+
+            <div class="guide-card">
+                <h3><span class="step-dark">Пункт 2</span></h3>
+                <p>Обязательные моды для игры на сервере</p>
+                <p>Моды скачивать на версию 1.21.11, внимательно выбирайте версию fabric, quilt, forge и прочие</p>
+                <ul>
+                    <li>Мод на эмоции - <a href="https://modrinth.com/plugin/emotecraft" target="_blank">emotecraft скачать</a> (дополнительные эмоции можно скачать <a href="https://drive.google.com/file/d/1C-zSHO-LcYKsMobNFxXyu4FcleBIhFtg/view" target="_blank">ЗДЕСЬ</a> распаковывать в папку .minecraft/emotes)</li>
+                    <li>Аддон на сгибание конечностей - <a href="https://modrinth.com/mod/bendable-cuboids" target="_blank">Bendable Cuboids скачать</a></li>
+                    <li>Мод на голосовой чат - <a href="https://modrinth.com/plugin/simple-voice-chat/versions" target="_blank">simplevoicechat скачать</a></li>
+                    <li>Мод на кастомные модели игроков - <a href="https://modrinth.com/plugin/custom-player-models" target="_blank">customizableplayermodels скачать</a>. Аддон для работы с голосовым чатом - CPM SVCc addon</li>
+                </ul>
+            </div>
+
+            <div class="guide-card">
+                <h3><span class="step-blue">Пункт 3</span></h3>
+                <p>ПОСЛЕ загрузки необходимых модов и эмоций вы можете спокойно заходить</p>
+                <p>Заходить с версии 1.21.11. Айпи:</p>
+                <div class="highlight-ip">play.legacyworld.online</div>
+                <p style="margin-top: 15px;">Можно зайти как с лицензии, так и с пиратки!</p>
+            </div>
+        </div>
+    </section>
+
+    <div class="bottom-bar">
+        <div class="footer-logo">
+            <span class="blue-text">LEGACY</span><span class="white-text">WORLD</span>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS("particles-js", {
+                "particles": {
+                    "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                    "color": { "value": "#ffffff" },
+                    "shape": { "type": "circle", "stroke": { "width": 0, "color": "#000000" }, "polygon": { "nb_sides": 5 } },
+                    "opacity": { "value": 0.6, "random": false },
+                    "size": { "value": 3, "random": true },
+                    "line_linked": { "enable": true, "distance": 150, "color": "#ffffff", "opacity": 0.2, "width": 1 },
+                    "move": { "enable": true, "speed": 2, "direction": "none", "random": false, "straight": false, "out_mode": "out", "bounce": false }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": { "onhover": { "enable": true, "mode": "grab" }, "onclick": { "enable": true, "mode": "push" } },
+                    "modes": { "grab": { "distance": 140, "line_linked": { "opacity": 1 } } }
+                },
+                "retina_detect": true
+            });
+        });
+    </script>
+</body>
+</html>
