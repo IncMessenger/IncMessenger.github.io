@@ -110,7 +110,7 @@
             box-shadow: 0 0 30px var(--blue-soft), inset 0 0 30px rgba(0,0,0,0.2);
             overflow: hidden;
             
-            /* ЗАДНИЙ ФОН ТЕПЕРЬ НАПРЯМУЮ ЧЕРЕЗ ВАШУ ССЫЛКУ */
+            /* ЗАДНИЙ ФОН ЧЕРЕЗ ВАШУ ССЫЛКУ */
             background-image: url('https://cdn.discordapp.com/attachments/1526849892276895847/1530555755982491748/1765041058_obnovlenie-maynkraft-mounts-of-mayhem.jpg?ex=6a6600a0&is=6a64af20&hm=7bc2faa5fcf648a60f81e395c6338bf0539ba58153e4a3cbf714d5dc89ab730c&');
             background-size: cover;
             background-position: center center;
@@ -119,7 +119,7 @@
 
         .hero-card .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: transparent; /* УБРАНО ЗАТЕМНЕНИЕ */
+            background: transparent;
             z-index: 1;
         }
 
@@ -173,6 +173,7 @@
         .about-text .gold-text { color: var(--gold); font-weight: 700; }
         .about-text .blue-text { color: var(--blue); font-weight: 700; }
 
+        /* СЕКЦИЯ КАРТЫ */
         .map-section { max-width: 1300px; margin: 60px auto 20px; padding: 0 40px; }
         .map-container { 
             position: relative; 
@@ -183,7 +184,7 @@
             overflow: hidden; 
             border: 1px solid var(--blue-soft); 
             box-shadow: 0 0 30px var(--blue-soft); 
-            background: #111;
+            background: #0a101c; /* Темный фон если карта упала */
         }
         
         .map-container iframe { 
@@ -191,6 +192,8 @@
             top: 0; left: 0; 
             width: 100%; height: 100%; 
             border: 0; 
+            /* Важно для работы http внутри https */
+            sandbox: allow-scripts allow-same-origin allow-forms; 
         }
 
         .bottom-bar { 
@@ -299,8 +302,8 @@
 
     <section class="map-section" id="map-section" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
         <div class="map-container">
-            <!-- ИСПРАВЛЕНИЕ ОШИБКИ MIXED CONTENT: ЗАМЕНА HTTP НА HTTPS (ЧЕРЕЗ ПРОКСИ, ЕСЛИ НУЖНО) -->
-            <iframe src="https://map.legacyworld.online:25175/" loading="lazy"></iframe>
+            <!-- ЗАГРУЖАЕМ КАРТУ ПО HTTP (РАБОТАЕТ ТОЛЬКО ЕСЛИ В CLOUDFLARE ВЫКЛЮЧЕН ALWAYS USE HTTPS) -->
+            <iframe src="http://map.legacyworld.online:25175/" loading="lazy"></iframe>
         </div>
     </section>
 
