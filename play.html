@@ -6,6 +6,9 @@
     <title>Вики - LEGACYWORLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
     
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <style>
@@ -33,16 +36,13 @@
         ul { list-style: none; }
 
         :root {
-            /* ЗОЛОТО И ГОЛУБОЙ ДЛЯ ВСЕХ УПОМИНАНИЙ LEGACYWORLD */
             --gold: #de9204; 
             --gold-glow: rgba(222, 146, 4, 0.6);
-            --gold-soft: rgba(222, 146, 4, 0.3);
             --blue: #00a2ff;   
             --blue-glow: rgba(0, 162, 255, 0.6);
-            --blue-soft: rgba(0, 162, 255, 0.3);
 
-            /* ОСТАЛЬНОЕ - СТРОГО ГОЛУБОЕ */
             --blue-main: #3b82f6; --blue-light: #60a5fa; --blue-dark: #1e3a8a;
+            --blue-soft: rgba(59, 130, 246, 0.3); 
             --btn-blue: #2563eb; --btn-light: #60a5fa; --btn-dark: #1e40af;
             --card-bg: rgba(255, 255, 255, 0.04);
         }
@@ -217,12 +217,12 @@
         </div>
     </header>
 
-    <section class="wiki-content">
+    <section class="wiki-content" data-aos="fade-up" data-aos-duration="800">
         
         <div class="wiki-grid">
             
             <!-- РАЗДЕЛ: МОДЫ -->
-            <div class="wiki-block">
+            <div class="wiki-block" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
                 <div class="section-badge">Моды и ресурсы</div>
                 
                 <div class="wiki-text">
@@ -258,7 +258,7 @@
             </div>
 
             <!-- РАЗДЕЛ: ФИШКИ -->
-            <div class="wiki-block">
+            <div class="wiki-block" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                 <div class="section-badge">Фишки</div>
                 
                 <div class="wiki-text">
@@ -290,7 +290,7 @@
                         <li>3 разные вариации, функционал одинаковый (у раскладушки есть небольшая анимка)</li>
                         <li>Можно бросить как бутылочку, на ее месте будут спавниться частицы дыма</li>
                     </ul>
-                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1527353376365351003/image.png?ex=6a643d6d&is=6a62ebed&hm=b722eba13650cf41c9921438b7e7d17fc840917e5d9d4db673a7fd6eeeca53f8&" alt="Телефон Lefone" class="wiki-image">
+                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1527353376365351003/image.png?ex=6a658eed&is=6a643d6d&hm=9e9c33d118dbae3f90cf0a17856027062f06749082285b3b81050cf8c79ceb85" alt="Телефон Lefone" class="wiki-image">
 
                     <br><strong>Дымовая граната</strong>
                     <ul>
@@ -303,7 +303,7 @@
                         <li>Стамеска может убирать шаблоны с вашей брони</li>
                         <li>Крафт - медный слиток и палка (изображение ниже)</li>
                     </ul>
-                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1524031693869289533/image.png?ex=6a64ae1e&is=6a635c9e&hm=a46fa1780b821c3579daeac6a0f8faa2b1c752f2e400778390a8f90a19a281b6&" alt="Стамеска" class="wiki-image">
+                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1524031693869289533/image.png?ex=6a65ff9e&is=6a64ae1e&hm=8299c5e03be5a4111c9cc02ec443948dd6004d716a042bf46cd38e24995ea7cb&" alt="Стамеска" class="wiki-image">
                     
                 </div>
             </div>
@@ -336,6 +336,9 @@
                 },
                 "retina_detect": true
             });
+
+            // Инициализация AOS анимации
+            AOS.init();
         });
     </script>
 </body>
