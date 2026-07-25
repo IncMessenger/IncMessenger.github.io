@@ -174,13 +174,56 @@
         .about-text .blue-text { color: var(--blue); font-weight: 700; }
 
         .map-section { max-width: 1300px; margin: 60px auto 20px; padding: 0 40px; }
-        .map-container { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 20px; overflow: hidden; border: 1px solid var(--blue-soft); box-shadow: 0 0 30px var(--blue-soft); }
-        .map-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+        .map-container { 
+            position: relative; 
+            width: 100%; 
+            height: 0; 
+            padding-bottom: 56.25%; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 1px solid var(--blue-soft); 
+            box-shadow: 0 0 30px var(--blue-soft); 
+            background: #111; /* Запасной фон, если карта не прогрузится */
+        }
+        
+        .map-container iframe { 
+            position: absolute; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            border: 0; 
+        }
 
-        .bottom-bar { background: rgba(0,0,0,0.3); border-top: 1px solid var(--blue-soft); padding: 30px 0; text-align: center; margin-top: 60px; backdrop-filter: blur(10px); }
-        .bottom-bar .footer-logo { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; }
+        .bottom-bar { 
+            background: rgba(0,0,0,0.3); 
+            border-top: 1px solid var(--blue-soft); 
+            padding: 30px 40px; 
+            text-align: center; 
+            margin-top: 60px; 
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .bottom-bar .footer-logo { 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            font-weight: 900; 
+            font-size: 28px; 
+        }
         .bottom-bar .footer-logo .gold-text { color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
         .bottom-bar .footer-logo .blue-text { color: var(--blue); text-shadow: 0 0 20px var(--blue-glow); }
+        
+        /* Добавляем мелкий текст в левый угол */
+        .bottom-bar .credit {
+            position: absolute;
+            left: 40px;
+            font-size: 12px;
+            color: #666666;
+            font-weight: 400;
+            letter-spacing: 1px;
+        }
 
         @media (max-width: 900px) {
             .nav-wrapper { flex-direction: column; gap: 20px; border-radius: 25px; padding: 20px;}
@@ -191,6 +234,13 @@
             .ip-address { justify-content: center; }
             .hero-card .overlay { background: transparent; }
             header { position: relative; top: 0; }
+            .bottom-bar .credit {
+                position: static;
+                margin-top: 15px;
+                text-align: center;
+                width: 100%;
+            }
+            .bottom-bar { flex-direction: column; padding: 30px 20px; }
         }
     </style>
 </head>
@@ -209,7 +259,6 @@
                     <li><a href="index.html" class="active">Главная</a></li>
                     <li><a href="play.html">Вики</a></li>
                     <li><a href="#map-section">Карта</a></li>
-                    <!-- ИЗМЕНЕНА ССЫЛКА ДОНАТА -->
                     <li><a href="https://shop.legacyworld.online/" target="_blank">Донат</a></li>
                 </ul>
             </nav>
@@ -251,11 +300,13 @@
 
     <section class="map-section" id="map-section" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
         <div class="map-container">
-            <iframe src="http://map.legacyworld.online:25175/" allowfullscreen loading="lazy"></iframe>
+            <!-- ВОЗВРАЩЕНА ОРИГИНАЛЬНАЯ ССЫЛКА НА КАРТУ -->
+            <iframe src="http://map.legacyworld.online:25175/" loading="lazy"></iframe>
         </div>
     </section>
 
     <div class="bottom-bar">
+        <span class="credit">by paralixium</span>
         <div class="footer-logo">
             <span class="gold-text">LEGACY</span><span class="blue-text">WORLD</span>
         </div>
