@@ -183,7 +183,7 @@
             overflow: hidden; 
             border: 1px solid var(--blue-soft); 
             box-shadow: 0 0 30px var(--blue-soft); 
-            background: #111; /* Запасной фон, если карта не прогрузится */
+            background: #111;
         }
         
         .map-container iframe { 
@@ -215,7 +215,6 @@
         .bottom-bar .footer-logo .gold-text { color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
         .bottom-bar .footer-logo .blue-text { color: var(--blue); text-shadow: 0 0 20px var(--blue-glow); }
         
-        /* Добавляем мелкий текст в левый угол */
         .bottom-bar .credit {
             position: absolute;
             left: 40px;
@@ -300,8 +299,8 @@
 
     <section class="map-section" id="map-section" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
         <div class="map-container">
-            <!-- ВОЗВРАЩЕНА ОРИГИНАЛЬНАЯ ССЫЛКА НА КАРТУ -->
-            <iframe src="http://map.legacyworld.online:25175/" loading="lazy"></iframe>
+            <!-- ИСПРАВЛЕНИЕ ОШИБКИ MIXED CONTENT: ЗАМЕНА HTTP НА HTTPS (ЧЕРЕЗ ПРОКСИ, ЕСЛИ НУЖНО) -->
+            <iframe src="https://map.legacyworld.online:25175/" loading="lazy"></iframe>
         </div>
     </section>
 
