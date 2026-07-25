@@ -6,6 +6,10 @@
     <title>LEGACYWORLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
     
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
     
     <style>
@@ -33,15 +37,12 @@
         ul { list-style: none; }
 
         :root {
-            /* ЗОЛОТО И ГОЛУБОЙ ДЛЯ ВСЕХ УПОМИНАНИЙ LEGACYWORLD */
             --gold: #de9204; 
             --gold-glow: rgba(222, 146, 4, 0.6);
-            --gold-soft: rgba(222, 146, 4, 0.3);
             --blue: #00a2ff;   
             --blue-glow: rgba(0, 162, 255, 0.6);
             --blue-soft: rgba(0, 162, 255, 0.3);
 
-            /* ОСТАЛЬНОЕ - СТРОГО ГОЛУБОЕ (КАК БЫЛО) */
             --blue-main: #3b82f6;    
             --blue-light: #60a5fa;   
             --btn-blue: #2563eb;    
@@ -98,16 +99,28 @@
 
         .hero { max-width: 1300px; margin: 20px auto 0; padding: 0 40px; }
         .hero-card {
-            position: relative; border-radius: 24px; min-height: 450px; padding: 70px 60px;
-            display: flex; flex-direction: column; justify-content: center; 
+            position: relative; 
+            border-radius: 24px; 
+            min-height: 450px; 
+            padding: 70px 60px;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
             border: 1px solid var(--blue-soft);
             box-shadow: 0 0 30px var(--blue-soft), inset 0 0 30px rgba(0,0,0,0.2);
             overflow: hidden;
+            
+            /* ЗАДНИЙ ФОН ТЕПЕРЬ НАПРЯМУЮ ЧЕРЕЗ ВАШУ ССЫЛКУ */
+            background-image: url('https://cdn.discordapp.com/attachments/1526849892276895847/1530555755982491748/1765041058_obnovlenie-maynkraft-mounts-of-mayhem.jpg?ex=6a6600a0&is=6a64af20&hm=7bc2faa5fcf648a60f81e395c6338bf0539ba58153e4a3cbf714d5dc89ab730c&');
+            background-size: cover;
+            background-position: center center;
+            background-repeat: no-repeat;
         }
-        .hero-card img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; }
+
         .hero-card .overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, #0a101c 20%, rgba(10, 16, 28, 0.3) 60%, rgba(10, 16, 28, 0.8) 100%); z-index: 1;
+            background: transparent; /* УБРАНО ЗАТЕМНЕНИЕ */
+            z-index: 1;
         }
 
         .hero-title { font-size: 64px; font-weight: 900; line-height: 1.1; margin-bottom: 25px; max-width: 700px; text-shadow: 0 4px 30px rgba(0,0,0,0.8); position: relative; z-index: 2; }
@@ -157,15 +170,8 @@
             margin-bottom: 20px;
         }
 
-        .about-text .gold-text {
-            color: var(--gold);
-            font-weight: 700;
-        }
-
-        .about-text .blue-text {
-            color: var(--blue);
-            font-weight: 700;
-        }
+        .about-text .gold-text { color: var(--gold); font-weight: 700; }
+        .about-text .blue-text { color: var(--blue); font-weight: 700; }
 
         .map-section { max-width: 1300px; margin: 60px auto 20px; padding: 0 40px; }
         .map-container { position: relative; width: 100%; height: 0; padding-bottom: 56.25%; border-radius: 20px; overflow: hidden; border: 1px solid var(--blue-soft); box-shadow: 0 0 30px var(--blue-soft); }
@@ -183,7 +189,7 @@
             .hero-actions { flex-direction: column; align-items: stretch; }
             .btn-primary { justify-content: center; width: 100%; }
             .ip-address { justify-content: center; }
-            .hero-card .overlay { background: linear-gradient(90deg, #0a101c 30%, rgba(10, 16, 28, 0.6) 100%); }
+            .hero-card .overlay { background: transparent; }
             header { position: relative; top: 0; }
         }
     </style>
@@ -216,12 +222,11 @@
 
     <section class="hero">
         <div class="hero-card">
-            <img src="https://248006.selcdn.ru/main/iblock/493/493b3377603d1939d1fe81f084021823/837308e2c316f21baae8e1dc9ba47e5b.jpg" alt="Minecraft Background">
             <div class="overlay"></div>
 
-            <h1 class="hero-title"><span class="gold-text">LegacyWorld</span> — мир<br>твоей <span class="blue-text">истории</span>!</h1>
-            <p class="hero-desc">Многопользовательский проект для лучших эмоций</p>
-            <div class="hero-actions">
+            <h1 class="hero-title" data-aos="fade-up" data-aos-duration="800"><span class="gold-text">Legacy</span><span class="blue-text">World</span> — мир<br>твоей <span class="blue-text">истории</span>!</h1>
+            <p class="hero-desc" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">Многопользовательский проект для лучших эмоций</p>
+            <div class="hero-actions" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
                 <a href="https://discord.gg/DBmW3SReb" target="_blank" class="btn-primary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="#ffffff"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037 13.435 13.435 0 0 0-.585 1.259 17.768 17.768 0 0 0-5.535 0 14.329 14.329 0 0 0-.59-1.264.074.074 0 0 0-.078-.037 19.791 19.791 0 0 0-4.885 1.515.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.118.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.076.076 0 0 0-.041.106 14.09 14.09 0 0 0 1.226 1.994.078.078 0 0 0 .084.028 19.9 19.9 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.096 2.157 2.418 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.096 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z"/></svg>
                     ПРИСОЕДИНИТЬСЯ
@@ -234,16 +239,16 @@
         </div>
     </section>
 
-    <section class="about-section">
+    <section class="about-section" data-aos="fade-up" data-aos-delay="300" data-aos-duration="800">
         <div class="about-text">
-            <p><span class="gold-text">LegacyWorld</span> — это приватный ванильный Minecraft-сервер, где каждый найдёт занятие по душе. Здесь ты можешь участвовать в захватывающих RP-сюжетах, масштабных ивентах или просто найти новых друзей для совместного выживания.</p>
+            <p><span class="gold-text">Legacy</span><span class="blue-text">World</span> — это приватный ванильный Minecraft-сервер, где каждый найдёт занятие по душе. Здесь ты можешь участвовать в захватывающих RP-сюжетах, масштабных ивентах или просто найти новых друзей для совместного выживания.</p>
             <p>Мы регулярно проводим большие серверные события с уникальными кастомными мобами, эпичными боссами и интересными механиками. На сервере тебя ждут красивые города, масштабные постройки и множество организаций, в которые можно вступить и стать частью истории мира.</p>
             <p>Самое главное — <span class="blue-text">никаких приватов и доната, дающего преимущества</span>. Всё, чего ты добьёшься, зависит только от тебя и твоей команды.</p>
-            <p>Строй, исследуй, общайся, выживай, создавай собственные истории, участвуй в ивентах и даже предлагай свои идеи для будущих событий. На <span class="gold-text">LegacyWorld</span> именно игроки делают мир живым, и здесь всё в твоих руках!</p>
+            <p>Строй, исследуй, общайся, выживай, создавай собственные истории, участвуй в ивентах и даже предлагай свои идеи для будущих событий. На <span class="gold-text">Legacy</span><span class="blue-text">World</span> именно игроки делают мир живым, и здесь всё в твоих руках!</p>
         </div>
     </section>
 
-    <section class="map-section" id="map-section">
+    <section class="map-section" id="map-section" data-aos="fade-up" data-aos-delay="400" data-aos-duration="800">
         <div class="map-container">
             <iframe src="http://map.legacyworld.online:25175/" allowfullscreen loading="lazy"></iframe>
         </div>
@@ -287,6 +292,9 @@
                 },
                 "retina_detect": true
             });
+
+            // Инициализация AOS анимации
+            AOS.init();
         });
     </script>
 </body>
