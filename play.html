@@ -6,6 +6,7 @@
     <title>Вики - LEGACYWORLD</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700;900&display=swap" rel="stylesheet">
     
+    <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
@@ -36,10 +37,11 @@
         ul { list-style: none; }
 
         :root {
-            --gold: #de9204; 
-            --gold-glow: rgba(222, 146, 4, 0.6);
-            --blue: #00a2ff;   
-            --blue-glow: rgba(0, 162, 255, 0.6);
+            /* НОВЫЕ ЦВЕТА ЛОГОТИПА */
+            --gold: #ed884e; 
+            --gold-glow: rgba(237, 136, 78, 0.6);
+            --blue: #6489ba;   
+            --blue-glow: rgba(100, 137, 186, 0.6);
 
             --blue-main: #3b82f6; --blue-light: #60a5fa; --blue-dark: #1e3a8a;
             --blue-soft: rgba(59, 130, 246, 0.3); 
@@ -62,11 +64,13 @@
             height: 100%;
         }
 
+        /* ЛОГОТИП В ШАПКЕ */
         .logo-line {
             display: flex;
             align-items: center;
             font-weight: 900;
-            font-size: 24px;
+            font-size: 24px; 
+            letter-spacing: 0px;
             line-height: 1;
         }
         .logo-line .gold-text { color: var(--gold); text-shadow: 0 0 12px var(--gold-glow); }
@@ -93,10 +97,34 @@
         .social-btn svg { width: 18px; height: 18px; fill: #ccc; transition: 0.3s; }
         .social-btn:hover svg { fill: #000; }
 
+        /* СТРАНИЦА ВИКИ */
         .wiki-content {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 40px auto 80px;
             padding: 0 40px;
+        }
+
+        .wiki-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .wiki-left {
+            flex: 1;
+        }
+
+        .wiki-right {
+            flex: 0 0 420px; 
+            padding-top: 120px;
+        }
+        .wiki-right img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+            display: block;
+            border: none;
+            box-shadow: none;
         }
 
         .section-badge {
@@ -174,20 +202,26 @@
             max-width: 100%;
             border-radius: 12px;
             margin: 15px 0;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            border: none;
+            box-shadow: none;
+            display: block;
         }
 
-        .bottom-bar { background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 0; text-align: center; margin-top: 60px; backdrop-filter: blur(10px); }
+        .bottom-bar { background: rgba(0,0,0,0.3); border-top: 1px solid rgba(255, 255, 255, 0.05); padding: 30px 40px; text-align: center; margin-top: 60px; backdrop-filter: blur(10px); display: flex; justify-content: center; align-items: center; position: relative; }
         .bottom-bar .footer-logo { display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 28px; }
         .bottom-bar .footer-logo .gold-text { color: var(--gold); text-shadow: 0 0 20px var(--gold-glow); }
         .bottom-bar .footer-logo .blue-text { color: var(--blue); text-shadow: 0 0 20px var(--blue-glow); }
+        .bottom-bar .credit { position: absolute; left: 40px; font-size: 12px; color: #666666; font-weight: 400; letter-spacing: 1px; }
 
         @media (max-width: 900px) {
             .nav-wrapper { flex-direction: column; gap: 20px; border-radius: 25px; padding: 20px;}
             nav ul { gap: 15px; flex-wrap: wrap; justify-content: center;}
+            .wiki-layout { flex-direction: column; gap: 30px; }
+            .wiki-right { flex: 1; width: 100%; padding-top: 0; }
             header { position: relative; top: 0; }
             .logo-container { align-items: center; }
+            .bottom-bar .credit { position: static; margin-top: 15px; text-align: center; width: 100%; }
+            .bottom-bar { flex-direction: column; padding: 30px 20px; }
         }
     </style>
 </head>
@@ -205,8 +239,8 @@
                 <ul>
                     <li><a href="index.html">Главная</a></li>
                     <li><a href="play.html" class="active">Вики</a></li>
-                    <li><a href="index.html#map-section">Карта</a></li>
-                    <li><a href="https://legacyworldstore.trademc.org/" target="_blank">Донат</a></li>
+                    <li><a href="http://map.legacyworld.online:25175/" target="_blank">Карта</a></li>
+                    <li><a href="https://shop.legacyworld.online/" target="_blank">Донат</a></li>
                 </ul>
             </nav>
             <div class="socials">
@@ -219,99 +253,112 @@
 
     <section class="wiki-content" data-aos="fade-up" data-aos-duration="800">
         
-        <div class="wiki-grid">
+        <div class="wiki-layout">
             
-            <!-- РАЗДЕЛ: МОДЫ -->
-            <div class="wiki-block" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
-                <div class="section-badge">Моды и ресурсы</div>
-                
-                <div class="wiki-text">
-                    <strong>Мод на эмоции</strong>
-                    <ul>
-                        <li><a href="https://modrinth.com/plugin/emotecraft" target="_blank" class="wiki-link">emotecraft скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a> (дополнительные эмоции можно скачать <a href="https://drive.google.com/file/d/1C-zSHO-LcYKsMobNFxXyu4FcleBIhFtg/view" target="_blank" class="wiki-link">ЗДЕСЬ</a> распаковывать в папку .minecraft/emotes)</li>
-                        <li>Аддон на сгибание конечностей — <a href="https://modrinth.com/mod/bendable-cuboids" target="_blank" class="wiki-link">Bendable Cuboids</a></li>
-                    </ul>
+            <!-- ЛЕВАЯ ЧАСТЬ: МОДЫ И ФИШКИ -->
+            <div class="wiki-left">
+                <div class="wiki-grid">
+                    
+                    <!-- РАЗДЕЛ: МОДЫ -->
+                    <div class="wiki-block" data-aos="fade-up" data-aos-delay="100" data-aos-duration="800">
+                        <div class="section-badge">Моды и ресурсы</div>
+                        
+                        <div class="wiki-text">
+                            <strong>Мод на эмоции</strong>
+                            <ul>
+                                <li><a href="https://modrinth.com/plugin/emotecraft" target="_blank" class="wiki-link">emotecraft скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a> (дополнительные эмоции можно скачать <a href="https://drive.google.com/file/d/1C-zSHO-LcYKsMobNFxXyu4FcleBIhFtg/view" target="_blank" class="wiki-link">ЗДЕСЬ</a> распаковывать в папку .minecraft/emotes)</li>
+                                <li>Аддон на сгибание конечностей — <a href="https://modrinth.com/mod/bendable-cuboids" target="_blank" class="wiki-link">Bendable Cuboids</a></li>
+                            </ul>
 
-                    <br><strong>Мод на голосовой чат</strong>
-                    <ul>
-                        <li><a href="https://modrinth.com/plugin/simple-voice-chat/versions" target="_blank" class="wiki-link">simplevoicechat скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a></li>
-                    </ul>
+                            <br><strong>Мод на голосовой чат</strong>
+                            <ul>
+                                <li><a href="https://modrinth.com/plugin/simple-voice-chat/versions" target="_blank" class="wiki-link">simplevoicechat скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a></li>
+                            </ul>
 
-                    <br><strong>Мод на кастомные модели игроков</strong>
-                    <ul>
-                        <li><a href="https://modrinth.com/plugin/custom-player-models" target="_blank" class="wiki-link">customizableplayermodels скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a><br>Аддон для работы с голосовым чатом — CPM SVCc addon</li>
-                    </ul>
+                            <br><strong>Мод на кастомные модели игроков</strong>
+                            <ul>
+                                <li><a href="https://modrinth.com/plugin/custom-player-models" target="_blank" class="wiki-link">customizableplayermodels скачать <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a><br>Аддон для работы с голосовым чатом — CPM SVCc addon</li>
+                            </ul>
 
-                    <br><strong>Наш ресурспак</strong>
-                    <ul>
-                        <li><a href="https://drive.google.com/file/d/1WQJyVJIeqB3dlHZH8aRMktjFSgnWANFw/view?usp=sharing" target="_blank" class="wiki-link">Скачать ресурспак <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a></li>
-                    </ul>
+                            <br><strong>Наш ресурспак</strong>
+                            <ul>
+                                <li><a href="https://drive.google.com/file/d/1WQJyVJIeqB3dlHZH8aRMktjFSgnWANFw/view?usp=sharing" target="_blank" class="wiki-link">Скачать ресурспак <svg viewBox="0 0 24 24"><path d="M14 3h7v7h-2V6.414l-8.293 8.293-1.414-1.414L17.586 5H14V3zm-4 4H5v14h14v-5h2v5c0 1.103-.897 2-2 2H5c-1.103 0-2-.897-2-2V7c0-1.103.897-2 2-2h5v2z"/></svg></a></li>
+                            </ul>
 
-                    <br><strong>Необходимые моды для работы ресурс пака:</strong>
-                    <ul>
-                        <li><a href="https://modrinth.com/mod/entity-model-features" target="_blank" class="wiki-link">Entity Model Features</a></li>
-                        <li><a href="https://modrinth.com/mod/entitytexturefeatures" target="_blank" class="wiki-link">Entity Texture Features</a></li>
-                        <li><a href="https://modrinth.com/mod/rpf" target="_blank" class="wiki-link">Resource Packs Fusion</a></li>
-                        <li><a href="https://modrinth.com/mod/rp-renames" target="_blank" class="wiki-link">RP Renames</a></li>
-                    </ul>
+                            <br><strong>Необходимые моды для работы ресурс пака:</strong>
+                            <ul>
+                                <li><a href="https://modrinth.com/mod/entity-model-features" target="_blank" class="wiki-link">Entity Model Features</a></li>
+                                <li><a href="https://modrinth.com/mod/entitytexturefeatures" target="_blank" class="wiki-link">Entity Texture Features</a></li>
+                                <li><a href="https://modrinth.com/mod/rpf" target="_blank" class="wiki-link">Resource Packs Fusion</a></li>
+                                <li><a href="https://modrinth.com/mod/rp-renames" target="_blank" class="wiki-link">RP Renames</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- РАЗДЕЛ: ФИШКИ -->
+                    <div class="wiki-block" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
+                        <div class="section-badge">Фишки</div>
+                        
+                        <div class="wiki-text">
+                            
+                            <strong>Подписанная книга</strong>
+                            <ul>
+                                <li>Если кликнуть на шифте белым красителем по кафедре в которой есть подписанная книга - то вы скроете* автора книги</li>
+                                <li>Если кликнуть на шифте ножницами по кафедре в которой есть книга, то вы уберете подпись с нее и вы сможете ее заново редактировать</li>
+                            </ul>
+
+                            <br><strong>Подозрительный песок</strong>
+                            <ul>
+                                <li>Взяв лопату в левую руку, а в правую любой предмет и кликнув по обычному песку или гравию вы можете их закопать в этот песок</li>
+                            </ul>
+
+                            <br><strong>Голова игрока</strong>
+                            <p style="margin-top: 10px;">Чтобы получить голову игрока вам нужно</p>
+                            <ul>
+                                <li>Из 4 комочков глины и ведра воды сделать глиняную смесь</li>
+                                <li>Полученную смесь наносим на голову (кликаем по воздуху)</li>
+                                <li>Через несколько секунд вы получите слепок вашего лица, который нужно высушить (поставить где-нибудь)</li>
+                                <li>Как только эта голова высохнет (Капельки воды перестанут появляться) вы можете ее покрасить (в правую руку кисточку а в левую краситель, кликаем три раза с разными красителями)</li>
+                            </ul>
+                            <img src="https://3xrw6bpq8e.ucarecd.net/d6d37b33-ee4d-4365-8dfa-919459c65ead/imagepng.png" alt="Голова игрока" class="wiki-image">
+
+                            <br><strong>Телефон Lefone</strong>
+                            <ul>
+                                <li>Позволяет открыть банк, либо просто покликать кнопки</li>
+                                <li>3 разные вариации, функционал одинаковый (у раскладушки есть небольшая анимка)</li>
+                                <li>Можно бросить как бутылочку, на ее месте будут спавниться частицы дыма</li>
+                            </ul>
+                            <img src="https://3xrw6bpq8e.ucarecd.net/4409611a-8907-4f93-a2dd-75a101ddd138/imagepng.png" alt="Телефон Lefone" class="wiki-image">
+
+                            <br><strong>Дымовая граната</strong>
+                            <ul>
+                                <li>Можно бросить как бутылочку, на ее месте будут спавниться частицы дыма</li>
+                            </ul>
+                            <img src="https://3xrw6bpq8e.ucarecd.net/1308173b-c49e-4ac1-b02b-01e69297f415/imagepng.png" alt="Дымовая граната" class="wiki-image">
+
+                            <br><strong>Стамеска</strong>
+                            <ul>
+                                <li>Стамеска может убирать шаблоны с вашей брони</li>
+                                <li>Крафт - медный слиток и палка (изображение ниже)</li>
+                            </ul>
+                            <img src="https://3xrw6bpq8e.ucarecd.net/7b0d2720-2eaf-4eab-b63f-f0e00abb8533/imagepng.png" alt="Стамеска" class="wiki-image">
+                            
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- РАЗДЕЛ: ФИШКИ -->
-            <div class="wiki-block" data-aos="fade-up" data-aos-delay="200" data-aos-duration="800">
-                <div class="section-badge">Фишки</div>
-                
-                <div class="wiki-text">
-                    
-                    <strong>Подписанная книга</strong>
-                    <ul>
-                        <li>Если кликнуть на шифте белым красителем по кафедре в которой есть подписанная книга - то вы скроете* автора книги</li>
-                        <li>Если кликнуть на шифте ножницами по кафедре в которой есть книга, то вы уберете подпись с нее и вы сможете ее заново редактировать</li>
-                    </ul>
-
-                    <br><strong>Подозрительный песок</strong>
-                    <ul>
-                        <li>Взяв лопату в левую руку, а в правую любой предмет и кликнув по обычному песку или гравию вы можете их закопать в этот песок</li>
-                    </ul>
-
-                    <br><strong>Голова игрока</strong>
-                    <p style="margin-top: 10px;">Чтобы получить голову игрока вам нужно</p>
-                    <ul>
-                        <li>Из 4 комочков глины и ведра воды сделать глиняную смесь</li>
-                        <li>Полученную смесь наносим на голову (кликаем по воздуху)</li>
-                        <li>Через несколько секунд вы получите слепок вашего лица, который нужно высушить (поставить где-нибудь)</li>
-                        <li>Как только эта голова высохнет (Капельки воды перестанут появляться) вы можете ее покрасить (в правую руку кисточку а в левую краситель, кликаем три раза с разными красителями)</li>
-                    </ul>
-                    <img src="https://cdn.discordapp.com/attachments/980441926379634692/1479144519524945961/image.png?ex=6a64dbae&is=6a638a2e&hm=d80c9ab78badca28ee376343779db400120495dd77c2db93d59a6a14a27e4766&" alt="Голова игрока" class="wiki-image">
-
-                    <br><strong>Телефон Lefone</strong>
-                    <ul>
-                        <li>Позволяет открыть банк, либо просто покликать кнопки</li>
-                        <li>3 разные вариации, функционал одинаковый (у раскладушки есть небольшая анимка)</li>
-                        <li>Можно бросить как бутылочку, на ее месте будут спавниться частицы дыма</li>
-                    </ul>
-                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1527353376365351003/image.png?ex=6a658eed&is=6a643d6d&hm=9e9c33d118dbae3f90cf0a17856027062f06749082285b3b81050cf8c79ceb85" alt="Телефон Lefone" class="wiki-image">
-
-                    <br><strong>Дымовая граната</strong>
-                    <ul>
-                        <li>Можно бросить как бутылочку, на ее месте будут спавниться частицы дыма</li>
-                    </ul>
-                    <img src="https://cdn.discordapp.com/attachments/980441926379634692/1479111800543776971/image.png?ex=6a64bd35&is=6a636bb5&hm=c41b847238365c123be84db3970cb2b6a1fbff6da974bd64fd401dbe372676d9&" alt="Дымовая граната" class="wiki-image">
-
-                    <br><strong>Стамеска</strong>
-                    <ul>
-                        <li>Стамеска может убирать шаблоны с вашей брони</li>
-                        <li>Крафт - медный слиток и палка (изображение ниже)</li>
-                    </ul>
-                    <img src="https://cdn.discordapp.com/attachments/1398298824547500228/1524031693869289533/image.png?ex=6a65ff9e&is=6a64ae1e&hm=8299c5e03be5a4111c9cc02ec443948dd6004d716a042bf46cd38e24995ea7cb&" alt="Стамеска" class="wiki-image">
-                    
-                </div>
+            <!-- ПРАВАЯ КОЛОНКА С КАРТИНКОЙ -->
+            <div class="wiki-right" data-aos="fade-left" data-aos-delay="200" data-aos-duration="800">
+                <img src="https://3xrw6bpq8e.ucarecd.net/a46b465f-1dcc-4f11-870b-d8f492de5df4/image.png" alt="Вики арт">
             </div>
 
         </div>
     </section>
 
     <div class="bottom-bar">
+        <span class="credit">by paralixium</span>
         <div class="footer-logo">
             <span class="gold-text">LEGACY</span><span class="blue-text">WORLD</span>
         </div>
